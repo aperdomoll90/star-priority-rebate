@@ -1,0 +1,3 @@
+type IHelloProps = {
+    name: string;
+};
