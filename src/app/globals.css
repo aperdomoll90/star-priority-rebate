@@ -2,6 +2,7 @@
   --background: #0a0a0a;
   --backgroundSecondary: #a9a7a7;
   --foreground: #ededed;
+  --secondaryFontColor: #343434;
 }
 
 * {

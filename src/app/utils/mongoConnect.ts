@@ -1,6 +1,15 @@
 import { MongoClient } from 'mongodb'
 
-const mongoClient = new MongoClient(process.env.MONGO_URI as string)
-const db = mongoClient.db('star-priority-rebates-db')
+const uri = process.env.MONGO_URI
+if (!uri) {
+  throw new Error('Missing MONGO_URI environment variable')
+}
 
-export default db
+const mongoClient = new MongoClient(uri)
+
+async function connectToMongodb() {
+  await mongoClient.connect()
+  return mongoClient.db()
+}
+
+export default connectToMongodb

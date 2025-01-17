@@ -1,9 +1,51 @@
 .page {
   height: 100dvh;
   width: 100dvw;
+  overflow: scroll;
   background: var(--backgroundSecondary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.main {
+  width: 90%;
+  height: 95%;
+  border-radius: 5px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+  > h1,
+  > p {
+    align-self: flex-start;
+  }
+  > h1 {
+    margin-top: 1.2rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 900;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: var(--secondaryFontColor);
+  }
+}
+
+@media (min-width: 970px) {
+  .page {
+    padding: 5rem;
+  }
+  .main {
+    width: 30dvw;
+    padding: 2rem;
+  }
 }
