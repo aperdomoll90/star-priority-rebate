@@ -1,22 +1,21 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
+import type { Metadata } from 'next'
+import './globals.scss'
 
 export const metadata: Metadata = {
-  title: "Priority Rebate",
-  description: "StarBright Rebate redemption portal",
-};
+  title: 'Priority Rebate',
+  description: 'StarBright Rebate redemption portal',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
-        {children}
+        <div className='page'>{children}</div>
       </body>
     </html>
-  );
+  )
 }

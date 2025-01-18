@@ -1,0 +1,53 @@
+.main {
+  width: 90dvw;
+  height: 95dvh;
+  border-radius: 5px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: var(--backgroundWhite);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: width 0.5s, height 0.5s;
+
+  > h1,
+  > p {
+    align-self: flex-start;
+  }
+  > h1 {
+    margin-top: 1.2rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 900;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .page {
+    padding: 5rem;
+  }
+  .main {
+    width: 70dvw;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .main {
+    width: 30dvw;
+  }
+}
+
+// Ipad Pro
+@media (min-width: 1000px) and (min-height: 1366px) {
+  .main {
+    width: 70dvw;
+  }
+}

@@ -1,0 +1,240 @@
+:root {
+  --whiteTransparent: rgba(255, 255, 255, 0.927);
+  --blackTransparent: rgba(0, 0, 0, 0.782);
+
+  --gray100: #fbfbfb; /* Very light gray (white) */
+  --gray200: #ededed; /* Light gray (off white) */
+  --gray300: #a9a7a7; /* Medium light gray */
+  --gray400: #616161; /* Medium gray */
+  --gray600: #444343; /* Slightly darker medium gray */
+  --gray700: #424242; /* Medium dark gray */
+  --gray800: #212121; /* Dark gray */
+  --gray900: #0a0a0a; /* Very dark gray (black) */
+
+  --blue100: #85c1f3; /* Light blue */
+  --blue200: #5dade2; /* Medium light blue */
+  --blue300: #3498db; /* Base blue */
+  --blue400: #2980b9; /* Medium dark blue */
+  --blue500: #1f639b; /* Dark blue */
+
+  --red100: #FFC0CB;   /* Pink */
+  --red200: #FFB6C1;   /* Light Pink */
+  --red300: #FF7F50;   /* Coral */
+  --red400: #ac7167;   /* Tomato Red */
+  --red500: #FF6347;   /* Tomato Red */
+  --red600: #DC143C;   /* Crimson */
+  --red700: #B22222;   /* Firebrick Red */
+  --red900: #8B0000;   /* Deep Dark Red */
+
+  
+  --green100: #98FB98;  /* Soft Pastel Green */
+  --green200: #2ecc71;  /* Base success color */
+  --green300: #96b996;  /* Pale Light Green */
+  --green500: #27ae60;  /* Darker success color */
+  --green900: #0b361c;  /* Darkest success color */
+
+  /* containers */
+  --backgroundWhite: var(--gray100);
+  --backgroundBlack: var(--gray900);
+  --backgroundLight: var(--gray200);
+  --backgroundMedium: var(--gray300);
+  --backgroundDark: var(--gray600);
+
+  /* Form */
+  --inputBgColor: var(--whiteTransparent);
+  --primaryButtonColor: var(--blue300);
+  --buttonColorHover: var(--blue400);
+  --buttonColorActive: var(--blue200);
+
+  /* Typography */
+  --secondaryHeaderFontColor: var(--gray600);
+  --primaryFontColor: var(--gray900);
+  --secondaryFontColor: var(--gray700);
+  --buttonFontColor: var(--gray100);
+
+  /* General Text Colors */
+  --textPrimary: var(--gray900); /* Primary text color for body */
+  --textSecondary: var(--gray700); /* Secondary text color for subheadings or less important text */
+  --textMuted: var(--gray600); /* Muted text color for disabled or less emphasized text */
+
+  /* Header Colors */
+  --headerPrimary: var(--gray900); /* Main header color (e.g., H1) */
+  --headerSecondary: var(--gray800); /* Secondary header color (e.g., H2) */
+  --headerTertiary: var(--gray700); /* Tertiary header color (e.g., H3) */
+
+  /* Button Text Color */
+  --buttonFontColor: var(--gray100); /* Button text color, usually white or light for contrast */
+
+  /* Link Colors */
+  --linkColor: var(--blue300); /* Default link color */
+  --linkHoverColor: var(--blue400); /* Link hover color */
+
+  /* Error handling */
+  --errorColor: var(--red900); /* Red */
+  --successColor: var(--green500); /* Green */
+  --warningColor: var(--blue300); /* Blue */
+
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--backgroundDark);
+}
+
+.page {
+  height: 100dvh;
+  width: 100dvw;
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.error_header {
+  color: var(--errorColor);
+  font-size: 4rem;
+  margin-top: 0.5rem;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 2;
+
+  &::after {
+    content: 'Sorry!!';
+    color: var(--red400);
+    position: absolute;
+    left: -5rem;
+    top: -3rem;
+    z-index: -1;
+    font-size: 7.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.2;
+  }
+}
+.error_message {
+  position: relative;
+  z-index: 2;
+  font-size: 1rem !important;
+  margin-bottom: 2rem;
+
+  &::after {
+    content: 'Sorry!!';
+    color: var(--red700);
+    position: absolute;
+    left: -20rem;
+    top: -2rem;
+    z-index: -1;
+    font-size: 10rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    rotate: -15deg;
+    opacity: 0.4;
+  }
+}
+
+.success_header {
+  position: relative;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  text-align: left;
+  align-items: flex-start;
+  letter-spacing: 1px;
+  color: var(--green900);
+  &::after {
+    content: 'Success!!';
+    color: var(--green300);
+    position: absolute;
+    left: -10rem;
+    top: -3rem;
+    z-index: -1;
+    font-size: 8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.2;
+  }
+}
+
+.success_message {
+  font-size: 2rem !important;
+  letter-spacing: 3px;
+  margin: 1rem;
+  text-align: center;
+  position: relative;
+  &::after {
+    content: 'Success!!';
+    color: var(--successColor);
+    position: absolute;
+    left: -20rem;
+    top: -2rem;
+    z-index: -1;
+    font-size: 12rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    rotate: -15deg;
+    opacity: 0.4;
+  }
+}
+
+.success_disclaimer {
+  font-size: 0.8rem !important;
+  color: var(--gray400);
+  text-align: center;
+}
+
+h1 {
+  color: var(--headerPrimary);
+}
+
+h2 {
+  color: var(--headerSecondary);
+}
+
+h3 {
+  color: var(--headerTertiary);
+}
+
+p {
+  color: var(--textPrimary);
+}
+
+a {
+  color: var(--linkColor);
+}
+
+a:hover {
+  color: var(--linkHoverColor);
+}
+
+button {
+  background-color: var(--blue300);
+  color: var(--buttonFontColor);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+button:hover {
+  background-color: var(--buttonColorHover);
+  border: none;
+  outline: none;
+}
+
+button:active {
+  background-color: var(--buttonColorActive);
+  outline: none;
+}
