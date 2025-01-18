@@ -1,8 +1,11 @@
 'use client'
 import React, { useState, ChangeEvent, FormEvent } from 'react'
-import Image from 'next/image'
+import { IInterestTypes, IUserRebateInfoProps } from '../../utils/userRebateInfoTypes'
+import Modal from '../common/modal/modal'
+import Button from '../common/button/button'
 import styles from './UserInfoForm.module.scss'
-import { IInterestTypes, IUserRebateInfoProps } from '../utils/userRebateInfoTypes'
+import modalStyles from '../common/modal/modal.module.scss'
+// import Image from 'next/image'
 
 const initialFormData: Partial<IUserRebateInfoProps> = {
   first_name: '',
@@ -30,6 +33,7 @@ const UserInfoForm: React.FC = () => {
   // const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -54,7 +58,7 @@ const UserInfoForm: React.FC = () => {
     }))
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
     setConfirmationNumber(null)
@@ -182,24 +186,25 @@ const UserInfoForm: React.FC = () => {
         </div>
       )} */}
 
-        <button type='submit' className={styles.submitButton}>
-          Submit
-        </button>
+        <Button label='Submit' onClick={handleSubmit} className={styles.submitButton} ariaLabel='Submit rebate form' type='submit' />
       </form>
-      {(error || confirmationNumber) && (
-        <div className={styles.overlay}>
-          <div className={styles.modal} style={{ color: error ? 'red' : 'inherit' }} onClick={() => (error ? setError(null) : setConfirmationNumber(null))}>
-            {error ? (
-              <p>{error}</p>
-            ) : (
-              <>
-                <p>Your Star brite Priority Rebate ID is:</p>
-                <p>{confirmationNumber}</p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {error ? (
+          <>
+            <h3 className={modalStyles.error_header}>Sorry!!</h3>
+            <p className={modalStyles.error_message}>{error}</p>
+          </>
+        ) : confirmationNumber ? (
+          <>
+            <h3 className={modalStyles.success_header}>Thank you</h3>
+            <p className={modalStyles.success_subheader}>
+              Your <span>Starbrite</span> Priority Rebate ID is:
+            </p>
+            <p className={modalStyles.success_message}>{confirmationNumber}</p>
+            <p className={modalStyles.success_disclaimer}>This info was sent to your email, please remember to check your spam folder</p>
+          </>
+        ) : null}
+      </Modal>
     </>
   )
 }

@@ -1,5 +1,5 @@
-import connectToMongodb from '@/app/utils/mongoConnect'
-import { IInterestTypes, IUserRebateInfoProps } from '@/app/utils/userRebateInfoTypes'
+import connectToMongodb from '@/utils/mongoConnect'
+import { IInterestTypes, IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const config = {
