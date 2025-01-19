@@ -17,21 +17,20 @@
   --blue400: #2980b9; /* Medium dark blue */
   --blue500: #1f639b; /* Dark blue */
 
-  --red100: #FFC0CB;   /* Pink */
-  --red200: #FFB6C1;   /* Light Pink */
-  --red300: #FF7F50;   /* Coral */
-  --red400: #ac7167;   /* Tomato Red */
-  --red500: #FF6347;   /* Tomato Red */
-  --red600: #DC143C;   /* Crimson */
-  --red700: #B22222;   /* Firebrick Red */
-  --red900: #8B0000;   /* Deep Dark Red */
+  --red100: #ffc0cb; /* Pink */
+  --red200: #ffb6c1; /* Light Pink */
+  --red300: #ff7f50; /* Coral */
+  --red400: #ac7167; /* Tomato Red */
+  --red500: #ff6347; /* Tomato Red */
+  --red600: #dc143c; /* Crimson */
+  --red700: #b22222; /* Firebrick Red */
+  --red900: #8b0000; /* Deep Dark Red */
 
-  
-  --green100: #98FB98;  /* Soft Pastel Green */
-  --green200: #2ecc71;  /* Base success color */
-  --green300: #96b996;  /* Pale Light Green */
-  --green500: #27ae60;  /* Darker success color */
-  --green900: #0b361c;  /* Darkest success color */
+  --green100: #98fb98; /* Soft Pastel Green */
+  --green200: #2ecc71; /* Base success color */
+  --green300: #96b996; /* Pale Light Green */
+  --green500: #27ae60; /* Darker success color */
+  --green900: #0b361c; /* Darkest success color */
 
   /* containers */
   --backgroundWhite: var(--gray100);
@@ -73,7 +72,6 @@
   --errorColor: var(--red900); /* Red */
   --successColor: var(--green500); /* Green */
   --warningColor: var(--blue300); /* Blue */
-
 }
 
 * {
@@ -223,6 +221,8 @@ button {
   background-color: var(--blue300);
   color: var(--buttonFontColor);
   transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 3px;
   cursor: pointer;
   border: none;
   outline: none;
@@ -237,4 +237,13 @@ button:hover {
 button:active {
   background-color: var(--buttonColorActive);
   outline: none;
+}
+
+button:disabled {
+  background-color: var(--gray300);
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: var(--gray300);
 }
