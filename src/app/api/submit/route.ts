@@ -4,20 +4,16 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const config = {
   api: {
-      bodyParser: true, // Enable default body parser for JSON
+    bodyParser: true,
   },
-};
+}
 
 export async function POST(req: NextRequest) {
   if (req.method !== 'POST') {
     return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 })
   }
   try {
-    const rawBody = await req.body; // Log raw body for debugging
-    console.log('Raw request body:', rawBody);
-
-    const body = await req.json();
-    console.log('Request body data received:', body)
+    const body = await req.json()
 
     const formData: Partial<IUserRebateInfoProps> = {
       ...body,
@@ -30,13 +26,11 @@ export async function POST(req: NextRequest) {
       product_barcode_image: `https://picsum.photos/seed/200/300`,
     }
 
-    console.log('Ready to connect data received:', formData)
-
-    const db = await connectToMongodb();
+    const db = await connectToMongodb()
     const result = await db.collection('rebate_transactions').insertOne(formData as IUserRebateInfoProps)
 
     const confirmationNumber = result.insertedId.toString()
-
+    console.log('Successfully inserted document')
     return NextResponse.json({ confirmationNumber }, { status: 201 })
   } catch (error) {
     console.error('Error processing form submission:', error)

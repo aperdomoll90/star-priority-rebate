@@ -65,11 +65,9 @@ const UserInfoForm: React.FC = () => {
 
     const submitData = JSON.stringify(formData)
 
-    // Log FormData contents
-    console.log('Form data to submit:', submitData)
 
     try {
-      const response = await fetch('/api/submit-rebate-info', {
+      const response = await fetch('/api/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Set content type to application/json
@@ -85,6 +83,8 @@ const UserInfoForm: React.FC = () => {
 
       const data = await response.json()
       setConfirmationNumber(data.confirmationNumber)
+      console.log('Confirmation number:', confirmationNumber)
+      setIsModalOpen(true)
       setFormData(initialFormData)
       // setPhotoPreview(null);
     } catch (error) {
@@ -98,23 +98,23 @@ const UserInfoForm: React.FC = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor='first_name'>First Name:</label>
-          <input type='text' id='first_name' name='first_name' value={formData.first_name || ''} onChange={handleInputChange} />
+          <input type='text' id='first_name' name='first_name' value={formData.first_name || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='last_name'>Last Name:</label>
-          <input type='text' id='last_name' name='last_name' value={formData.last_name || ''} onChange={handleInputChange} />
+          <input type='text' id='last_name' name='last_name' value={formData.last_name || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='email'>Email:</label>
-          <input type='email' id='email' name='email' value={formData.email || ''} onChange={handleInputChange} />
+          <input type='email' id='email' name='email' value={formData.email || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='phone'>Phone:</label>
-          <input type='tel' id='phone' name='phone' value={formData.phone || ''} onChange={handleInputChange} />
+          <input type='tel' id='phone' name='phone' value={formData.phone || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='address'>Street Address:</label>
-          <input type='text' id='address' name='address' value={formData.address || ''} onChange={handleInputChange} />
+          <input type='text' id='address' name='address' value={formData.address || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='address2'>Street Address 2:</label>
@@ -122,27 +122,28 @@ const UserInfoForm: React.FC = () => {
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='city'>City:</label>
-          <input type='text' id='city' name='city' value={formData.city || ''} onChange={handleInputChange} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor='zip'>ZIP:</label>
-          <input type='text' id='zip' name='zip' value={formData.zip || ''} onChange={handleInputChange} />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor='country'>Country:</label>
-          <input type='text' id='country' name='country' value={formData.country || ''} onChange={handleInputChange} />
+          <input type='text' id='city' name='city' value={formData.city || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='state'>State:</label>
-          <input type='text' id='state' name='state' value={formData.state || ''} onChange={handleInputChange} />
+          <input type='text' id='state' name='state' value={formData.state || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
+          <label htmlFor='zip'>ZIP:</label>
+          <input type='text' id='zip' name='zip' value={formData.zip || ''} onChange={handleInputChange} required />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor='country'>Country:</label>
+          <input type='text' id='country' name='country' value={formData.country || ''} onChange={handleInputChange} required />
+        </div>
+
+        <div className={styles.formGroup}>
           <label htmlFor='store_name'>Store Name:</label>
-          <input type='text' id='store_name' name='store_name' value={formData.store_name || ''} onChange={handleInputChange} />
+          <input type='text' id='store_name' name='store_name' value={formData.store_name || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='store_city'>Store City:</label>
-          <input type='text' id='store_city' name='store_city' value={formData.store_city || ''} onChange={handleInputChange} />
+          <input type='text' id='store_city' name='store_city' value={formData.store_city || ''} onChange={handleInputChange} required />
         </div>
         <div className={`${styles.formGroup} ${styles.interests}`}>
           <p>Interests:</p>
@@ -169,11 +170,11 @@ const UserInfoForm: React.FC = () => {
 
         <div className={styles.formGroup}>
           <label htmlFor='product_code'>Product Code:</label>
-          <input type='text' id='product_code' name='product_code' value={formData.product_code || ''} onChange={handleInputChange} />
+          <input type='text' id='product_code' name='product_code' value={formData.product_code || ''} onChange={handleInputChange} required />
         </div>
         <div className={styles.formGroup}>
           <label htmlFor='redeem_code'>Redeem Code:</label>
-          <input type='text' id='redeem_code' name='redeem_code' value={formData.redeem_code || ''} onChange={handleInputChange} />
+          <input type='text' id='redeem_code' name='redeem_code' value={formData.redeem_code || ''} onChange={handleInputChange} required />
         </div>
 
         {/* <div className={styles.formGroup}>
