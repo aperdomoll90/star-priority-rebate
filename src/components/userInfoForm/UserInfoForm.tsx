@@ -5,6 +5,7 @@ import Modal from '../common/modal/modal'
 import Button from '../common/button/button'
 import styles from './UserInfoForm.module.scss'
 import modalStyles from '../common/modal/modal.module.scss'
+import { createValidationRules } from '@/utils/useFormValidation'
 // import Image from 'next/image'
 
 const initialFormData: Partial<IUserRebateInfoProps> = {
@@ -34,6 +35,25 @@ const UserInfoForm: React.FC = () => {
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+
+  const validationRules = createValidationRules([
+    'first_name',
+    'last_name',
+    'email',
+    'phone',
+    'address',
+    'city',
+    'state',
+    'zip',
+    'country',
+    'store_name',
+    'store_city',
+    'product_code',
+    'redeem_code'
+  ])
+
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -70,7 +90,7 @@ const UserInfoForm: React.FC = () => {
       const response = await fetch('/api/submit', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Set content type to application/json
+          'Content-Type': 'application/json',
         },
         body: submitData,
       })
