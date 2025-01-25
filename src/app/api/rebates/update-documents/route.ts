@@ -5,16 +5,13 @@ import { ObjectId } from 'mongodb'
 export async function POST(req: Request) {
   try {
     const { rebates } = await req.json()
-    console.log('Received rebates:', rebates)
 
     const db = await connectToMongodb()
 
     const ids = rebates.map((rebate: any) => new ObjectId(rebate._id))
-    console.log('IDs to update:', ids)
 
     const result = await db.collection('rebate_transactions').updateMany({ _id: { $in: ids } }, { $set: { exported: true } })
 
-    console.log('Update result:', result)
 
     return NextResponse.json({ success: true, updatedCount: result.modifiedCount })
   } catch (error) {

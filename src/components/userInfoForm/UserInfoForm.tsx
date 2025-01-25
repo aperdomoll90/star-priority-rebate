@@ -103,7 +103,6 @@ const UserInfoForm: React.FC = () => {
 
       const data = await response.json()
       setConfirmationNumber(data.confirmationNumber)
-      console.log('Confirmation number:', confirmationNumber)
       setIsModalOpen(true)
       setFormData(initialFormData)
       // setPhotoPreview(null);
