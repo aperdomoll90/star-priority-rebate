@@ -15,9 +15,24 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
+    const dateAdded = new Date();
+
+    function formatDate(dateAdded:any) {
+      const year = dateAdded.getFullYear();
+      const month = String(dateAdded.getMonth() + 1).padStart(2, '0');
+      const day = String(dateAdded.getDate()).padStart(2, '0');
+      const hours = String(dateAdded.getHours()).padStart(2, '0');
+      const minutes = String(dateAdded.getMinutes()).padStart(2, '0');
+      const seconds = String(dateAdded.getSeconds()).padStart(2, '0');
+    
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    
+    const formattedDate = formatDate(dateAdded);
+
     const formData: Partial<IUserRebateInfoProps> = {
       ...body,
-      date_added: new Date(),
+      date_added: formattedDate,
       interests: body.interests as IInterestTypes[],
       subscription: Boolean(body.subscription),
       exported: false,
@@ -30,7 +45,6 @@ export async function POST(req: NextRequest) {
     const result = await db.collection('rebate_transactions').insertOne(formData as IUserRebateInfoProps)
 
     const confirmationNumber = result.insertedId.toString()
-    console.log('Successfully inserted document')
     return NextResponse.json({ confirmationNumber }, { status: 201 })
   } catch (error) {
     console.error('Error processing form submission:', error)

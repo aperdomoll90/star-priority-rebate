@@ -4,7 +4,7 @@ import Button from '../common/button/button'
 import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { generateCSV, downloadCSV } from '@/utils/csvHandler'
 
-interface IAdminPortalProps extends IUserRebateInfoProps {
+export interface IAdminPortalProps extends IUserRebateInfoProps {
   _id: string
 }
 
