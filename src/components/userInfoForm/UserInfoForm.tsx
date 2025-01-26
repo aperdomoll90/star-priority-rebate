@@ -6,6 +6,7 @@ import Button from '../common/button/button'
 import styles from './UserInfoForm.module.scss'
 import modalStyles from '../common/modal/modal.module.scss'
 import { createValidationRules } from '@/utils/useFormValidation'
+import Loader from '../common/loader/loader'
 // import Image from 'next/image'
 
 const initialFormData: Partial<IUserRebateInfoProps> = {
@@ -35,25 +36,9 @@ const UserInfoForm: React.FC = () => {
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-
-  const validationRules = createValidationRules([
-    'first_name',
-    'last_name',
-    'email',
-    'phone',
-    'address',
-    'city',
-    'state',
-    'zip',
-    'country',
-    'store_name',
-    'store_city',
-    'product_code',
-    'redeem_code'
-  ])
-
-
+  const validationRules = createValidationRules(['first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country', 'store_name', 'store_city', 'product_code', 'redeem_code'])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -80,11 +65,11 @@ const UserInfoForm: React.FC = () => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoading(true)
     setError(null)
     setConfirmationNumber(null)
 
     const submitData = JSON.stringify(formData)
-
 
     try {
       const response = await fetch('/api/submit', {
@@ -103,6 +88,7 @@ const UserInfoForm: React.FC = () => {
 
       const data = await response.json()
       setConfirmationNumber(data.confirmationNumber)
+      setIsLoading(false)
       setIsModalOpen(true)
       setFormData(initialFormData)
       // setPhotoPreview(null);
@@ -114,6 +100,7 @@ const UserInfoForm: React.FC = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
           <label htmlFor='first_name'>First Name:</label>
