@@ -3,6 +3,7 @@ import styles from './AdminPortal.module.scss'
 import Button from '../common/button/button'
 import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { generateCSV, downloadCSV } from '@/utils/csvHandler'
+import Loader from '../common/loader/loader'
 
 export interface IAdminPortalProps extends IUserRebateInfoProps {
   _id: string
@@ -12,6 +13,7 @@ export default function AdminPortal() {
   const [rebates, setRebates] = useState<IAdminPortalProps[]>([])
   const [seeAll, setSeeAll] = useState(false)
   const [seeNewRebates, setSeeNewRebates] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     fetchRebates()
@@ -47,11 +49,18 @@ export default function AdminPortal() {
     }
   }
 
-  const handleDownload = () => {
-    if (rebates.length > 0) {
-      const csvContent = generateCSV(rebates)
-      downloadCSV(csvContent, 'rebates.csv')
-      updateExportedStatus(rebates)
+  const handleDownload = async () => {
+    setIsLoading(true)
+    try {
+      if (rebates.length > 0) {
+        const csvContent = generateCSV(rebates)
+        downloadCSV(csvContent, 'rebates.csv')
+        await updateExportedStatus(rebates)
+      }
+    } catch (error) {
+      console.error('Error during download process:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -66,33 +75,36 @@ export default function AdminPortal() {
   }
 
   return (
-    <div className={styles.adminContainer}>
-      <h1>Admin Portal</h1>
-      <div className={styles.filterOptions}>
-        <label>
-          <input type='checkbox' checked={seeAll} onChange={handleSeeAllChange} />
-          See All
-        </label>
-        <label>
-          <input type='checkbox' checked={seeNewRebates} onChange={handleSeeNewRebatesChange} />
-          See New Rebates
-        </label>
+    <>
+      {isLoading && <Loader />}
+      <div className={styles.adminContainer}>
+        <h1>Admin Portal</h1>
+        <div className={styles.filterOptions}>
+          <label>
+            <input type='checkbox' checked={seeAll} onChange={handleSeeAllChange} />
+            See All
+          </label>
+          <label>
+            <input type='checkbox' checked={seeNewRebates} onChange={handleSeeNewRebatesChange} />
+            See New Rebates
+          </label>
+        </div>
+        <div className={styles.rebateList} style={{ justifyContent: rebates.length === 0 ? 'center' : 'flex-start', alignItems: rebates.length === 0 ? 'center' : 'flex-start' }}>
+          {rebates.length > 0 ? (
+            rebates.map(rebate => (
+              <div key={rebate._id} className={styles.rebateItem}>
+                <span>
+                  {rebate.first_name} {rebate.last_name}
+                </span>
+                <span>ID: {rebate._id}</span>
+              </div>
+            ))
+          ) : (
+            <div>No rebates to display</div>
+          )}
+        </div>
+        <Button label='Download' onClick={handleDownload} className={styles.downloadButton} ariaLabel='Download rebates' disabled={rebates.length === 0} />
       </div>
-      <div className={styles.rebateList} style={{justifyContent: rebates.length === 0 ? 'center' : 'flex-start', alignItems: rebates.length === 0 ? 'center' : 'flex-start'}}>
-        {rebates.length > 0 ? (
-          rebates.map(rebate => (
-            <div key={rebate._id} className={styles.rebateItem}>
-              <span>
-                {rebate.first_name} {rebate.last_name}
-              </span>
-              <span>ID: {rebate._id}</span>
-            </div>
-          ))
-        ) : (
-          <div>No rebates to display</div>
-        )}
-      </div>
-      <Button label='Download' onClick={handleDownload} className={styles.downloadButton} ariaLabel='Download rebates' disabled={rebates.length === 0} />
-    </div>
+    </>
   )
 }

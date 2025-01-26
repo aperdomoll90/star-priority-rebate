@@ -7,10 +7,12 @@ import AdminPortal from '@/components/adminPortal/AdminPortal'
 import Button from '@/components/common/button/button'
 import Modal from '@/components/common/modal/modal'
 import { createValidationRules, useFormValidation } from '@/utils/useFormValidation'
+import Loader from '@/components/common/loader/loader'
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const loginValidationRules = createValidationRules(['username', 'password'])
 
@@ -18,16 +20,13 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoggedIn(true)
-    // if (validateForm()) {
-    //   // Implement your authentication logic here
-    //   // For demonstration, we're using a simple check
-    //   if (values.username === '' && values.password === '') {
-    //     setIsLoggedIn(true)
-    //   } else {
-    //     setIsModalOpen(true)
-    //   }
-    // }
+    setIsLoading(true)
+
+    // Simulate loading using a timer
+    setTimeout(() => {
+      setIsLoggedIn(true)
+      setIsLoading(false)
+    }, 2000) // 2-second delay for the loader
   }
 
   if (isLoggedIn) {
@@ -36,15 +35,16 @@ export default function AdminPage() {
 
   return (
     <>
+      {isLoading && <Loader />}
       <div className={styles.loginContainer}>
         <h1 className={styles.loginHeader}>Admin Login</h1>
         <form onSubmit={handleLogin} className={styles.loginForm}>
           <div>
-            <input type='text' name='username' value={values.username} onChange={handleChange} placeholder='Username'  />
+            <input type='text' name='username' value={values.username} onChange={handleChange} placeholder='Username' />
             {errors.username && <span className={styles.error}>{errors.username}</span>}
           </div>
           <div>
-            <input type='password' name='password' value={values.password} onChange={handleChange} placeholder='Password'  />
+            <input type='password' name='password' value={values.password} onChange={handleChange} placeholder='Password' />
             {errors.password && <span className={styles.error}>{errors.password}</span>}
           </div>
           <Button label='Login' onClick={handleLogin} className={styles.loginButton} ariaLabel='Admin Login form' type='submit' />
