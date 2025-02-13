@@ -115,4 +115,13 @@
   }
 }
 
-
+.recaptchaWrapper {
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  background: var(--backgroundLight);
+}
