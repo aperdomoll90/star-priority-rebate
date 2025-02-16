@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, ChangeEvent, FormEvent } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 import { IInterestTypes, IUserRebateInfoProps } from '../../utils/userRebateInfoTypes'
 import Modal from '../common/modal/modal'
 import Button from '../common/button/button'
@@ -9,6 +9,7 @@ import { createValidationRules } from '@/utils/useFormValidation'
 import Loader from '../common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 import UserInfoFields from './UserInfoFields'
+import { Checkbox, Input } from '../common/formElements/FormElements'
 
 const initialFormData: Partial<IUserRebateInfoProps> = {
   first_name: '',
@@ -40,6 +41,15 @@ const UserInfoForm: React.FC = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState<boolean>(false)
   const [isCaptchaVisible, setIsCaptchaVisible] = useState<boolean>(false)
   const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState<boolean>(false)
+  const [isFieldsScrollComplete, setIsFieldsScrollComplete] = useState(false)
+
+  const handleFieldsScroll = (isComplete: boolean) => {
+    setIsFieldsScrollComplete(isComplete)
+  }
+
+  useEffect(() => {
+    console.log('isFieldsScrollComplete', isFieldsScrollComplete)
+  }, [isFieldsScrollComplete])
 
   const validationRules = createValidationRules(['first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country', 'store_name', 'store_city', 'product_code', 'redeem_code'])
 
@@ -108,12 +118,13 @@ const UserInfoForm: React.FC = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <UserInfoFields formData={formData} handleInputChange={handleInputChange} handleInterestChange={handleInterestChange} />
-        <Button label='Submit' onClick={handleSubmit} className={styles.submitButton} ariaLabel='Submit rebate form' type='submit' />
+      <form onSubmit={handleSubmit} className={styles['c-user-form']}>
+        <UserInfoFields formData={formData} handleInputChange={handleInputChange} handleInterestChange={handleInterestChange} onScrollComplete={handleFieldsScroll} />
+        <Button label='Submit' onClick={handleSubmit} className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
       </form>
+
       {isCaptchaVisible && (
-        <div className={styles.recaptchaWrapper}>
+        <div className={styles['recaptcha-wrapper']}>
           <ReCaptchaVerifier onSuccess={handleCaptchaSuccess} onFailure={handleCaptchaFailure} isVerifying={isVerifyingCaptcha} setIsVerifying={setIsVerifyingCaptcha} />
         </div>
       )}
