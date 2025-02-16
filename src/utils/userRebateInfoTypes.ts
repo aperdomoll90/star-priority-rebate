@@ -1,13 +1,13 @@
 export enum IInterestTypes {
-  automotive = 'AUTOMOTIVE',
-  home_care = 'HOME CARE',
-  freshwater_boating = 'FRESHWATER BOATING',
-  saltwater_boating = 'SALTWATER BOATING',
-  paddlesports = 'PADDLESPORTS',
-  powersports_motorcycle = 'POWERSPORTS / MOTORCYCLE',
-  small_engine_power_equipment = 'SMALL ENGINE / POWER EQUIPMENT',
-  rvs = "RV'S",
-  send_me_everything = 'SEND ME EVERYTHING!',
+  automotive = 'Automotive',
+  home_care = 'Home Care',
+  freshwater_boating = 'Freshwater Boating',
+  saltwater_boating = 'Saltwater Boating',
+  paddlesports = 'Paddlesports',
+  powersports_motorcycle = 'Powersports / Motorcycle',
+  small_engine_power_equipment = 'Small Engine / Power Equipment',
+  rvs = "RV's",
+  send_me_everything = 'Send Me Everything!',
 }
 
 export interface IUserRebateInfoProps {

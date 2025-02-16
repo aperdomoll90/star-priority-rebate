@@ -3,12 +3,17 @@ import UserInfoForm from '../components/userInfoForm/UserInfoForm'
 
 export default function Home() {
   return (
-    
-      <main className={styles.main}>
-        <h1>Priority Rebate Form</h1>
-        <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p>
+    <main className={styles['c-main']}>
+      <div className={`${styles['c-main__column']} ${styles['c-main__content-column']}`}>
         <UserInfoForm />
-        <p style={{ alignSelf: 'center' }}>v scroll v</p>
-      </main>
+      </div>
+      <div className={`${styles['c-main__column']} ${styles['c-main__right-column']}`}>
+        <div className={styles['c-main__banner']}>
+          <h1>Starbrite</h1>
+          <h4>Priority Rebate Form</h4>
+          <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p>
+        </div>
+      </div>
+    </main>
   )
 }

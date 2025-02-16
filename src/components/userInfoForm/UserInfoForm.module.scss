@@ -1,121 +1,57 @@
-.form {
+.c-user-form {
   width: 100%;
-  height: 80dvh;
-  overflow: scroll;
-  padding: 2rem;
-  background-color: var(--backgroundLight);
+  height: 100%;
   border-radius: 5px;
   position: relative;
-  display: flex;
   flex-direction: column;
+  display: flex;
+  padding: 2rem;
   gap: 1rem;
-}
+  background-color: var(--backgroundLight);
 
-.formGroup {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-direction: column;
-  align-items: flex-start;
-
-  label {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    width: auto;
-    gap: 0.5rem;
-    color: var(--textPrimary);
-  }
-
-  input {
-    width: 100%;
-    padding: 0.4rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: var(--inputBgColor);
-  }
-}
-
-.photoPreview {
-  margin-top: 1rem;
-  text-align: center;
-
-  img {
+  &__input-container {
     max-width: 100%;
-    border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  }
-}
-
-.submitButton {
-  width: 100%;
-}
-
-.interests {
-  display: flex;
-  flex-direction: column;
-  background: var(--inputBgColor);
-  align-items: flex-start;
-  width: 100%;
-}
-
-.checkboxContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.checkboxContainer label {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  width: auto;
-  gap: 0.5rem;
-}
-
-.subscription {
-  display: flex;
-  flex-direction: column;
-  background: var(--inputBgColor);
-  align-items: flex-start;
-  padding: 0.5rem 0;
-
-  label {
+    max-height: 100%;
+    overflow: scroll;
+    flex: 1;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     align-items: center;
-    white-space: nowrap;
-    width: auto;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    &--interests {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+
+      &--checkbox-container {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
+
+    &--checkbox {
+      justify-content: flex-start !important;
+    }
+    &--input {
+      flex-wrap: wrap;
+    }
   }
-}
 
-.comments {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  label {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    width: auto;
-    gap: 0.5rem;
-  }
-
-  textarea {
+  &__submit-button {
     width: 100%;
-    min-height: 5rem;
-    padding: 0.4rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    background-color: var(--inputBgColor);
   }
 }
 
-.recaptchaWrapper {
+.recaptcha-wrapper {
   height: 100%;
   width: 100%;
   z-index: 9999;
@@ -124,4 +60,14 @@
   justify-content: center;
   align-items: center;
   background: var(--backgroundLight);
+}
+
+@media (min-width: 700px) {
+  .c-user-form {
+    &__input-container--interests {
+      &--checkbox-container {
+        gap: 1rem;
+      }
+    }
+  }
 }

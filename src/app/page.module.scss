@@ -1,53 +1,100 @@
-.main {
-  width: 90dvw;
-  height: 95dvh;
-  border-radius: 5px;
-  padding: 1rem;
+.c-main {
+  height: calc(100dvh - 0rem);
+  width: calc(100dvw - 0.2rem);
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column-reverse;
   gap: 1rem;
   background-color: var(--backgroundWhite);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: width 0.5s, height 0.5s;
 
-  > h1,
-  > p {
-    align-self: flex-start;
-  }
-  > h1 {
-    margin-top: 1.2rem;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-weight: 900;
+  &__content-column {
+    height: 80%;
   }
 
-  p {
-    font-size: 0.9rem;
+  &__banner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+
+    > h1,
+    > h4,
+    > p {
+      align-self: flex-start;
+    }
+    > h1 {
+      text-transform: uppercase;
+      font-size: 2.6rem;
+      letter-spacing: 0.8px;
+      font-weight: 900;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
   }
 }
 
 @media (min-width: 700px) {
-  .page {
-    padding: 5rem;
-  }
-  .main {
-    width: 70dvw;
-    padding: 2rem;
+  .c-main {
+    width: calc(100dvw - 4rem);
+    height: calc(100dvh - 4rem);
+    flex-direction: row;
+    gap: 0;
+
+    &__column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__content-column {
+      flex: 2.7;
+      padding: 1.2rem;
+    }
+
+    &__banner {
+      width: 95%;
+      height: 95%;
+      border-radius: 10px;
+      background: var(--blue800);
+      padding: 2rem;
+
+
+      > h1,
+      > h4,
+      > p {
+        color: var(--white100);
+      }
+      > h1 {
+        letter-spacing: 6px;
+        font-size: 4rem;
+      }
+
+      p {
+        margin-top: 2rem;
+      }
+    }
   }
 }
 
-@media (min-width: 900px) {
-  .main {
-    width: 30dvw;
-  }
-}
+// @media (min-width: 900px) {
+//   .main {
+//     width: 30dvw;
+//   }
+// }
 
 // Ipad Pro
-@media (min-width: 1000px) and (min-height: 1366px) {
-  .main {
-    width: 70dvw;
-  }
-}
+// @media (min-width: 1000px) and (min-height: 1366px) {
+//   .main {
+//     width: 70dvw;
+//   }
+// }
