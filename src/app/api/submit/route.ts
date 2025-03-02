@@ -8,31 +8,40 @@ export const config = {
   },
 }
 
+// Function to generate a unique 5-character alphanumeric ID
+async function generateUniqueId(db: any) {
+  let uniqueId = '' // Initialize the variable
+  let exists = true
+
+  while (exists) {
+    // Generate a random 5-character alphanumeric ID
+    uniqueId = Math.random().toString(36).substring(2, 7).toUpperCase()
+
+    // Check if the ID already exists in the database
+    const existingDoc = await db.collection('rebate_transactions').findOne({ unique_id: uniqueId })
+    exists = !!existingDoc // If document exists, regenerate ID
+  }
+
+  return uniqueId
+}
+
 export async function POST(req: NextRequest) {
   if (req.method !== 'POST') {
     return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 })
   }
+
   try {
     const body = await req.json()
+    const db = await connectToMongodb()
 
-    const dateAdded = new Date();
+    const uniqueId = await generateUniqueId(db)
 
-    function formatDate(dateAdded:any) {
-      const year = dateAdded.getFullYear();
-      const month = String(dateAdded.getMonth() + 1).padStart(2, '0');
-      const day = String(dateAdded.getDate()).padStart(2, '0');
-      const hours = String(dateAdded.getHours()).padStart(2, '0');
-      const minutes = String(dateAdded.getMinutes()).padStart(2, '0');
-      const seconds = String(dateAdded.getSeconds()).padStart(2, '0');
-    
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
-    
-    const formattedDate = formatDate(dateAdded);
+    const dateAdded = new Date().toISOString()
 
     const formData: Partial<IUserRebateInfoProps> = {
       ...body,
-      date_added: formattedDate,
+      unique_id: uniqueId,
+      date_added: dateAdded,
       interests: body.interests as IInterestTypes[],
       subscription: Boolean(body.subscription),
       exported: false,
@@ -41,11 +50,9 @@ export async function POST(req: NextRequest) {
       product_barcode_image: `https://picsum.photos/seed/200/300`,
     }
 
-    const db = await connectToMongodb()
-    const result = await db.collection('rebate_transactions').insertOne(formData as IUserRebateInfoProps)
+    await db.collection('rebate_transactions').insertOne(formData as IUserRebateInfoProps)
 
-    const confirmationNumber = result.insertedId.toString()
-    return NextResponse.json({ confirmationNumber }, { status: 201 })
+    return NextResponse.json({ confirmationNumber: uniqueId }, { status: 201 })
   } catch (error) {
     console.error('Error processing form submission:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
