@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     const formData: Partial<IUserRebateInfoProps> = {
       ...body,
-      unique_id: uniqueId,
+      user_id: uniqueId,
       date_added: dateAdded,
       interests: body.interests as IInterestTypes[],
       subscription: Boolean(body.subscription),
