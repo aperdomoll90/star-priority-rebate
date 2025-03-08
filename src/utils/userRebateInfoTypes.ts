@@ -28,7 +28,7 @@ export interface IUserRebateInfoProps {
   subscription?: boolean
   product_code?: string
   redeem_code?: string
-  receipt_image?: string
+  receipt_image?: File | string; 
   coupon_image?: string
   product_barcode_image?: string
   date_added?: Date

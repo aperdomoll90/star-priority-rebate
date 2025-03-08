@@ -9,9 +9,12 @@ import { createValidationRules } from '@/utils/useFormValidation'
 import Loader from '../common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 import UserInfoFields from './UserInfoFields'
-import { Checkbox, Input } from '../common/formElements/FormElements'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
-const initialFormData: Partial<IUserRebateInfoProps> = {
+const initialFormData = {
   first_name: '',
   last_name: '',
   address: '',
@@ -29,10 +32,20 @@ const initialFormData: Partial<IUserRebateInfoProps> = {
   subscription: false,
   product_code: '',
   redeem_code: '',
-  exported: false,
+  receipt_image: undefined,
 }
 
 const UserInfoForm: React.FC = () => {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<UserInfoSchemaType>({
+    resolver: zodResolver(userInfoSchema),
+    defaultValues: initialFormData,
+  })
+
   const [formData, setFormData] = useState<Partial<IUserRebateInfoProps>>(initialFormData)
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -47,34 +60,12 @@ const UserInfoForm: React.FC = () => {
     setIsFieldsScrollComplete(isComplete)
   }
 
-  useEffect(() => {
-    console.log('isFieldsScrollComplete', isFieldsScrollComplete)
-  }, [isFieldsScrollComplete])
-
-  const validationRules = createValidationRules(['first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country', 'store_name', 'store_city', 'product_code', 'redeem_code'])
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    }))
-  }
-
-  const handleInterestChange = (interest: IInterestTypes) => {
-    setFormData(prev => ({
-      ...prev,
-      interests: prev.interests?.includes(interest) ? prev.interests.filter(i => i !== interest) : [...(prev.interests || []), interest],
-    }))
-  }
-
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const onSubmit = async (data: UserInfoSchemaType) => {
     setIsLoading(true)
     setIsCaptchaVisible(true)
   }
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (data: UserInfoSchemaType) => {
     setError(null)
     setConfirmationNumber(null)
 
@@ -82,7 +73,7 @@ const UserInfoForm: React.FC = () => {
       const response = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       })
 
       if (!response.ok) {
@@ -92,10 +83,10 @@ const UserInfoForm: React.FC = () => {
         return
       }
 
-      const data = await response.json()
-      setConfirmationNumber(data.confirmationNumber)
+      const responseData = await response.json()
+      setConfirmationNumber(responseData.confirmationNumber)
       setIsModalOpen(true)
-      setFormData(initialFormData)
+      reset() // Reset form to initial values
       setIsLoading(false)
     } catch (error) {
       console.error('Error submitting form:', error)
@@ -107,7 +98,7 @@ const UserInfoForm: React.FC = () => {
   const handleCaptchaSuccess = () => {
     setIsCaptchaVerified(true)
     setIsCaptchaVisible(false)
-    handleFormSubmit()
+    handleSubmit(handleFormSubmit)()
   }
 
   const handleCaptchaFailure = (message: string) => {
@@ -115,12 +106,35 @@ const UserInfoForm: React.FC = () => {
     setIsLoading(false)
   }
 
+  const handleImageUpload = async (file: File) => {
+    console.log('handleImageUpload entered')
+    try {
+      // 1️⃣ Request a signed URL from your API
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileType: file.type }),
+      })
+
+      // console.log('response', response)
+
+      if (!response.ok) {
+        console.log('Failed to get signed URL', response)
+      } else {
+        console.log('Success to get signed URL', response)
+      }
+    } catch (error) {
+      console.log('Image upload error:', error)
+      setError('Error uploading the image.')
+    }
+  }
+
   return (
     <>
       {isLoading && <Loader />}
-      <form onSubmit={handleSubmit} className={styles['c-user-form']}>
-        <UserInfoFields formData={formData} handleInputChange={handleInputChange} handleInterestChange={handleInterestChange} onScrollComplete={handleFieldsScroll} />
-        <Button label='Submit' onClick={handleSubmit} className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
+      <form onSubmit={handleSubmit(onSubmit)} className={styles['c-user-form']} encType='multipart/form-data'>
+        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields  control={control} errors={errors} handleImageUpload={handleImageUpload} onScrollComplete={handleFieldsScroll} />} />
+        <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
       </form>
 
       {isCaptchaVisible && (

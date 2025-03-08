@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
       interests: body.interests as IInterestTypes[],
       subscription: Boolean(body.subscription),
       exported: false,
-      receipt_image: `https://picsum.photos/seed/200/300`,
+      receipt_image: body.receipt_image,
       coupon_image: `https://picsum.photos/seed/200/300`,
       product_barcode_image: `https://picsum.photos/seed/200/300`,
     }

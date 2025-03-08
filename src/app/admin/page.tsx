@@ -1,33 +1,49 @@
 'use client'
 
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import styles from './AdminLoginPage.module.scss'
 import modalStyles from '../../components/common/modal/modal.module.scss'
 import AdminPortal from '@/components/adminPortal/AdminPortal'
 import Button from '@/components/common/button/button'
 import Modal from '@/components/common/modal/modal'
-import { createValidationRules, useFormValidation } from '@/utils/useFormValidation'
 import Loader from '@/components/common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 
+// Define the schema for form validation
+// const loginSchema = z.object({
+//   username: z.string().min(1, 'Username is required'),
+//   password: z.string().min(1, 'Password is required'),
+// })
+const loginSchema = z.object({
+  username: z.string().optional(),
+  password: z.string().optional(),
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
+
 export default function AdminPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [modalMessage, setModalMessage] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isCaptchaVisible, setIsCaptchaVisible] = useState<boolean>(false)
-  const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState<boolean>(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isCaptchaVisible, setIsCaptchaVisible] = useState(false)
+  const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState(false)
 
-  const loginValidationRules = createValidationRules(['username', 'password'])
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  })
 
-  const { values, errors, handleChange } = useFormValidation({ username: '', password: '' }, loginValidationRules)
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
 
-    if (values.username === 'a' && values.password === 'a') {
+    if (!data.username || !data.password) {
       setIsCaptchaVisible(true)
       setIsLoading(false)
     } else {
@@ -59,16 +75,16 @@ export default function AdminPage() {
         <h1 className={styles.loginHeader}>Admin Login</h1>
 
         {!isCaptchaVisible && (
-          <form onSubmit={handleLogin} className={styles.loginForm}>
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
             <div>
-              <input type='text' name='username' value={values.username} onChange={handleChange} placeholder='Username' />
-              {errors.username && <span className={styles.error}>{errors.username}</span>}
+              <input type='text' {...register('username')} placeholder='Username' />
+              {errors.username && <span className={styles.error}>{errors.username.message}</span>}
             </div>
             <div>
-              <input type='password' name='password' value={values.password} onChange={handleChange} placeholder='Password' />
-              {errors.password && <span className={styles.error}>{errors.password}</span>}
+              <input type='password' {...register('password')} placeholder='Password' />
+              {errors.password && <span className={styles.error}>{errors.password.message}</span>}
             </div>
-            <Button type='submit' label='Next' onClick={handleLogin} className={styles.loginButton} ariaLabel='Verify Login' />
+            <Button type='submit' label='Next' className={styles.loginButton} ariaLabel='Verify Login' />
           </form>
         )}
 
