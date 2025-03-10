@@ -1,35 +1,43 @@
 import { IInterestTypes } from '@/utils/userRebateInfoTypes'
 import { ChangeEvent } from 'react'
+import { Control, FieldError } from 'react-hook-form';
 
 
 export interface FormInputProps {
-  id: string
-  name: string
-  type: string
-  label: string
-  value: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  required?: boolean
-  className?: string
+  name: string;
+  control: Control<any>;
+  label: string;
+  type: string;
+  className?: string;
+  required?: boolean;
+  error?: FieldError;
 }
 
 export interface TextAreaProps {
-  id: string
-  name: string
-  label: string
-  value: string
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
-  required?: boolean
-  className?: string
+  name: string;
+  control: Control<any>;
+  label: string;
+  className?: string;
+  required?: boolean;
+  error?: FieldError;
 }
 
 export interface CheckboxInputProps {
-  id: string
-  name: string
-  label: string
-  checked: boolean
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  className?: string
+  name: string;
+  control: Control<any>;
+  label: string;
+  className?: string;
+  checked?: boolean;
+  error?: FieldError;
+}
+
+export interface CheckboxImageProps {
+  id: string;
+  name: string;
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+  className?: string;
 }
 
 

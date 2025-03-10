@@ -3,7 +3,7 @@ import styles from './button.module.scss'
 
 interface ButtonProps {
   label: string
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   className?: string
   ariaLabel: string
   disabled?: boolean
@@ -12,7 +12,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, className, ariaLabel, disabled = false, type = 'button' }) => {
   return (
-    <button className={`${styles.button} ${className}`} onClick={e => onClick(e)} aria-label={ariaLabel} disabled={disabled} tabIndex={0} type={type}>
+    <button className={`${styles.button} ${className}`} onClick={onClick ? e => onClick(e) : undefined} aria-label={ariaLabel} disabled={disabled} tabIndex={0} type={type}>
       {label}
     </button>
   )

@@ -1,16 +1,14 @@
+'use client'
 import { useState, useEffect } from 'react'
 import styles from './AdminPortal.module.scss'
-import Button from '../common/button/button'
+import Button from '../../components/common/button/button'
 import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { generateCSV, downloadCSV } from '@/utils/csvHandler'
-import Loader from '../common/loader/loader'
-
-export interface IAdminPortalProps extends IUserRebateInfoProps {
-  _id: string
-}
+import Loader from '../../components/common/loader/loader'
+import Image from 'next/image'
 
 export default function AdminPortal() {
-  const [rebates, setRebates] = useState<IAdminPortalProps[]>([])
+  const [rebates, setRebates] = useState<IUserRebateInfoProps[]>([])
   const [seeAll, setSeeAll] = useState(false)
   const [seeNewRebates, setSeeNewRebates] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +31,7 @@ export default function AdminPortal() {
     }
   }
 
-  const updateExportedStatus = async (rebates: IAdminPortalProps[]) => {
+  const updateExportedStatus = async (rebates: IUserRebateInfoProps[]) => {
     try {
       const response = await fetch('/api/rebates/update-documents', {
         method: 'POST',
@@ -92,11 +90,12 @@ export default function AdminPortal() {
         <div className={styles.rebateList} style={{ justifyContent: rebates.length === 0 ? 'center' : 'flex-start', alignItems: rebates.length === 0 ? 'center' : 'flex-start' }}>
           {rebates.length > 0 ? (
             rebates.map(rebate => (
-              <div key={rebate._id} className={styles.rebateItem}>
+              <div key={rebate.user_id} className={styles.rebateItem}>
                 <span>
                   {rebate.first_name} {rebate.last_name}
                 </span>
-                <span>ID: {rebate._id}</span>
+                <span>ID: {rebate.user_id}</span>
+                <Image src={rebate.receipt_image as string} alt='Receipt Image' width={200} height={200} className={styles.image} />
               </div>
             ))
           ) : (

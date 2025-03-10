@@ -16,6 +16,13 @@
     align-items: center;
   }
 }
+.image {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 5px;
+  background: red;
+}
 
 .rebateList {
   height: 80%;

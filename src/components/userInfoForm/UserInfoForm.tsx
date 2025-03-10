@@ -9,9 +9,12 @@ import { createValidationRules } from '@/utils/useFormValidation'
 import Loader from '../common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 import UserInfoFields from './UserInfoFields'
-import { Checkbox, Input } from '../common/formElements/FormElements'
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
-const initialFormData: Partial<IUserRebateInfoProps> = {
+const initialFormData = {
   first_name: '',
   last_name: '',
   address: '',
@@ -29,11 +32,21 @@ const initialFormData: Partial<IUserRebateInfoProps> = {
   subscription: false,
   product_code: '',
   redeem_code: '',
-  exported: false,
+  receipt_image: undefined,
 }
 
 const UserInfoForm: React.FC = () => {
-  const [formData, setFormData] = useState<Partial<IUserRebateInfoProps>>(initialFormData)
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<UserInfoSchemaType>({
+    resolver: zodResolver(userInfoSchema),
+    defaultValues: initialFormData,
+  })
+
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -47,59 +60,52 @@ const UserInfoForm: React.FC = () => {
     setIsFieldsScrollComplete(isComplete)
   }
 
-  useEffect(() => {
-    console.log('isFieldsScrollComplete', isFieldsScrollComplete)
-  }, [isFieldsScrollComplete])
-
-  const validationRules = createValidationRules(['first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country', 'store_name', 'store_city', 'product_code', 'redeem_code'])
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    }))
-  }
-
-  const handleInterestChange = (interest: IInterestTypes) => {
-    setFormData(prev => ({
-      ...prev,
-      interests: prev.interests?.includes(interest) ? prev.interests.filter(i => i !== interest) : [...(prev.interests || []), interest],
-    }))
-  }
-
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const onSubmit = async (data: UserInfoSchemaType) => {
     setIsLoading(true)
     setIsCaptchaVisible(true)
   }
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (data: UserInfoSchemaType) => {
     setError(null)
     setConfirmationNumber(null)
+    setIsLoading(true)
 
     try {
+      const formData = new FormData()
+
+      Object.keys(data).forEach(key => {
+        const value = (data as Record<string, unknown>)[key]
+        if (key === 'receipt_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (Array.isArray(value)) {
+          value.forEach((item: string) => formData.append(key, item))
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, value as string)
+        }
+      })
+
       const response = await fetch('/api/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: formData,
       })
 
       if (!response.ok) {
         const errorData = await response.json()
-        setError(errorData.error || 'Submission failed')
-        setIsLoading(false)
-        return
+        throw new Error(errorData.error || 'Submission failed')
       }
 
-      const data = await response.json()
-      setConfirmationNumber(data.confirmationNumber)
+      const responseData = await response.json()
+      setConfirmationNumber(responseData.confirmationNumber)
       setIsModalOpen(true)
-      setFormData(initialFormData)
-      setIsLoading(false)
-    } catch (error) {
+      reset()
+    } catch (error: unknown) {
       console.error('Error submitting form:', error)
-      setError('An unexpected error occurred')
+      if (error instanceof Error) {
+        setError(error.message)
+      } else {
+        setError('An unexpected error occurred')
+      }
+    } finally {
       setIsLoading(false)
     }
   }
@@ -107,7 +113,7 @@ const UserInfoForm: React.FC = () => {
   const handleCaptchaSuccess = () => {
     setIsCaptchaVerified(true)
     setIsCaptchaVisible(false)
-    handleFormSubmit()
+    handleSubmit(handleFormSubmit)()
   }
 
   const handleCaptchaFailure = (message: string) => {
@@ -118,9 +124,9 @@ const UserInfoForm: React.FC = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <form onSubmit={handleSubmit} className={styles['c-user-form']}>
-        <UserInfoFields formData={formData} handleInputChange={handleInputChange} handleInterestChange={handleInterestChange} onScrollComplete={handleFieldsScroll} />
-        <Button label='Submit' onClick={handleSubmit} className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
+      <form onSubmit={handleSubmit(onSubmit)} className={styles['c-user-form']} encType='multipart/form-data'>
+        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} onScrollComplete={handleFieldsScroll} watch={watch} reset={reset} />} />
+        <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
       </form>
 
       {isCaptchaVisible && (
