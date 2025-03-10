@@ -1,30 +1,42 @@
 'use client'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { IInterestTypes, IUserRebateInfoProps } from '../../utils/userRebateInfoTypes'
+import React, { useEffect, useRef, useState } from 'react'
+import { IInterestTypes } from '../../utils/userRebateInfoTypes'
 import styles from './UserInfoForm.module.scss'
 import { Checkbox, CheckboxImage, Input, TextArea } from '../common/formElements/FormElements'
 import { Controller } from 'react-hook-form'
+import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
 interface UserInfoFieldsProps {
   control: any
   errors?: any
-  handleImageUpload: (file: File) => void
   onScrollComplete: (isComplete: boolean) => void
+  watch?: (fieldName: keyof UserInfoSchemaType) => any
+  reset?: () => void
 }
 
-const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, handleImageUpload, onScrollComplete }) => {
+const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScrollComplete, watch }) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const scrollableRef = useRef<HTMLDivElement>(null)
-  const [isScrollComplete, setIsScrollComplete] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const receiptImageWatch = watch?.('receipt_image')
+
+  useEffect(() => {
+    if (!receiptImageWatch) {
+      setImagePreview(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }, [receiptImageWatch])
+  
   useEffect(() => {
     const handleScroll = () => {
       if (scrollableRef.current) {
         const { scrollTop, scrollHeight, clientHeight } = scrollableRef.current
         if (scrollHeight - scrollTop <= clientHeight + 2 * parseFloat(getComputedStyle(document.documentElement).fontSize)) {
-          setIsScrollComplete(true)
           onScrollComplete(true)
         } else {
-          setIsScrollComplete(false)
           onScrollComplete(false)
         }
       }
@@ -41,37 +53,45 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, handle
     }
   }, [onScrollComplete])
 
+  const isFieldRequired = (fieldName: keyof UserInfoSchemaType) => {
+    const fieldSchema = userInfoSchema.shape[fieldName]
+    return !fieldSchema.isOptional()
+  }
+
   return (
     <div ref={scrollableRef} className={styles['c-user-form__input-container']}>
-      <Input className='w-50' control={control} name='first_name' type='text' label='First Name:' error={errors.first_name} required />
-      <Input className='w-50' control={control} name='last_name' type='text' label='Last Name:' error={errors.last_name} required />
-      <Input className='w-50' control={control} name='email' type='email' label='Email:' error={errors.email} required />
-      <Input className='w-50' control={control} name='phone' type='tel' label='Phone:' error={errors.phone} required />
-      <Input className='w-100' control={control} name='address' type='text' label='Street Address:' error={errors.address} required />
+      <Input className='w-50' control={control} name='first_name' type='text' label='First Name:' error={errors.first_name} required={isFieldRequired('first_name')} />
+      <Input className='w-50' control={control} name='last_name' type='text' label='Last Name:' error={errors.last_name} required={isFieldRequired('last_name')} />
+      <Input className='w-50' control={control} name='email' type='email' label='Email:' error={errors.email} required={isFieldRequired('email')} />
+      <Input className='w-50' control={control} name='phone' type='tel' label='Phone:' error={errors.phone} required={isFieldRequired('phone')} />
+      <Input className='w-100' control={control} name='address' type='text' label='Street Address:' error={errors.address} required={isFieldRequired('address')} />
       <Input className='w-100' control={control} name='address2' type='text' label='Street Address 2:' error={errors.address2} />
-      <Input className='w-40' control={control} name='city' type='text' label='City:' error={errors.city} required />
-      <Input className='w-20' control={control} name='state' type='text' label='State:' error={errors.state} required />
-      <Input className='w-20' control={control} name='zip' type='text' label='ZIP:' error={errors.zip} required />
-      <Input className='w-20' control={control} name='country' type='text' label='Country:' error={errors.country} required />
-      <Input className='w-20' control={control} name='store_name' type='text' label='Store Name:' error={errors.store_name} required />
-      <Input className='w-20' control={control} name='store_city' type='text' label='Store City:' error={errors.store_city} required />
+      <Input className='w-40' control={control} name='city' type='text' label='City:' error={errors.city} required={isFieldRequired('city')} />
+      <Input className='w-20' control={control} name='state' type='text' label='State:' error={errors.state} required={isFieldRequired('state')} />
+      <Input className='w-20' control={control} name='zip' type='text' label='ZIP:' error={errors.zip} required={isFieldRequired('zip')} />
+      <Input className='w-20' control={control} name='country' type='text' label='Country:' error={errors.country} required={isFieldRequired('country')} />
+      <Input className='w-20' control={control} name='store_name' type='text' label='Store Name:' error={errors.store_name} required={isFieldRequired('store_name')} />
+      <Input className='w-20' control={control} name='store_city' type='text' label='Store City:' error={errors.store_city} required={isFieldRequired('store_city')} />
 
+      {/* Interests */}
       <div className={styles['c-user-form__input-container--interests']}>
         <p>Interests:</p>
         <div className={styles['c-user-form__input-container--interests--checkbox-container']}>
           {Object.values(IInterestTypes).map(interest => (
             <Controller
               key={interest}
-              name='interests'
+              name="interests"
               control={control}
               render={({ field }) => (
                 <CheckboxImage
                   id={interest}
                   name={field.name}
                   label={interest}
-                  checked={field.value.includes(interest)}
+                  checked={(field.value || []).includes(interest)}
                   onChange={() => {
-                    const updatedInterests = field.value.includes(interest) ? field.value.filter((i: IInterestTypes) => i !== interest) : [...field.value, interest]
+                    const updatedInterests = field.value.includes(interest)
+                      ? field.value.filter((i: IInterestTypes) => i !== interest)
+                      : [...field.value, interest]
                     field.onChange(updatedInterests)
                   }}
                 />
@@ -81,33 +101,52 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, handle
         </div>
       </div>
 
+      {/* Receipt Image */}
       <Controller
-        name='receipt_image'
+        name="receipt_image"
         control={control}
-        render={({ field: { onChange, ...field } }) => (
-          <label>
-            Receipt Image:
-            <input
-              type='file'
-              accept='image/*'
-              id='receipt_image'
-              {...field}
-              onChange={e => {
-                const file = e.target.files?.[0] || null
-                onChange(file)
-                if (file) {
-                  handleImageUpload(file)
-                }
-              }}
-            />
-          </label>
+        defaultValue=""
+        render={({ field: { onChange } }) => (
+          <div>
+            <label>
+              Receipt Image:
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                id="receipt_image"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null
+                  onChange(file)
+                  if (file) {
+                    const previewUrl = URL.createObjectURL(file)
+                    setImagePreview(previewUrl)
+                  } else {
+                    setImagePreview(null)
+                  }
+                }}
+              />
+            </label>
+            {imagePreview && (
+              <div>
+                <img src={imagePreview} alt="Receipt Preview" style={{ maxWidth: '200px', maxHeight: '200px' }} />
+              </div>
+            )}
+          </div>
         )}
       />
 
-      <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
-      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='product_code' type='text' label='Product Code:' required />
-      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='redeem_code' type='text' label='Redeem Code:' required />
-      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name='subscription' label='Subscribe to newsletter' />
+      {/* Comments */}
+      <TextArea control={control} name="comments1" label="Comments:" error={errors.comments1} />
+
+      {/* Product Code */}
+      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name="product_code" type="text" label="Product Code:" />
+
+      {/* Redeem Code */}
+      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name="redeem_code" type="text" label="Redeem Code:" />
+
+      {/* Subscription Checkbox */}
+      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name="subscription" label="Subscribe to newsletter" />
     </div>
   )
 }

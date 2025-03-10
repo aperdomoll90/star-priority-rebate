@@ -31,7 +31,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ name, control, label, classN
 export const Checkbox: React.FC<CheckboxInputProps> = ({ name, control, label, className = '', error }) => {
   return (
     <div className={`${checkboxStyles['checkbox-container']} ${className}`}>
-      <Controller name={name} control={control} render={({ field }) => <input id={name} {...field} type='checkbox' />} />
+      <Controller name={name} control={control} render={({ field }) => <input id={name} {...field} type='checkbox' checked={field.value} onChange={e => field.onChange(e.target.checked)} />} />
       <label htmlFor={name}>{label}</label>
       {error && <span className={checkboxStyles.error}>{error.message}</span>}
     </div>

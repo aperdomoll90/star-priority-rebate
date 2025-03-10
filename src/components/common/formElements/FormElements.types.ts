@@ -27,6 +27,7 @@ export interface CheckboxInputProps {
   control: Control<any>;
   label: string;
   className?: string;
+  checked?: boolean;
   error?: FieldError;
 }
 

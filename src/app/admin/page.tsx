@@ -1,22 +1,18 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation' // Import useRouter
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import styles from './AdminLoginPage.module.scss'
 import modalStyles from '../../components/common/modal/modal.module.scss'
-import AdminPortal from '@/components/adminPortal/AdminPortal'
 import Button from '@/components/common/button/button'
 import Modal from '@/components/common/modal/modal'
 import Loader from '@/components/common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 
 // Define the schema for form validation
-// const loginSchema = z.object({
-//   username: z.string().min(1, 'Username is required'),
-//   password: z.string().min(1, 'Password is required'),
-// })
 const loginSchema = z.object({
   username: z.string().optional(),
   password: z.string().optional(),
@@ -25,12 +21,13 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function AdminPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isCaptchaVisible, setIsCaptchaVisible] = useState(false)
   const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState(false)
+
+  const router = useRouter()
 
   const {
     register,
@@ -47,6 +44,7 @@ export default function AdminPage() {
       setIsCaptchaVisible(true)
       setIsLoading(false)
     } else {
+      // If username and password are provided, show an error
       setModalMessage('Invalid credentials, please try again.')
       setIsModalOpen(true)
       setIsLoading(false)
@@ -54,18 +52,13 @@ export default function AdminPage() {
   }
 
   const handleCaptchaSuccess = () => {
-    setTimeout(() => {
-      setIsLoggedIn(true)
-    }, 2000)
+    setIsLoading(true)
+    router.push('/adminportal')
   }
 
   const handleCaptchaFailure = (message: string) => {
     setModalMessage(message)
     setIsModalOpen(true)
-  }
-
-  if (isLoggedIn) {
-    return <AdminPortal />
   }
 
   return (

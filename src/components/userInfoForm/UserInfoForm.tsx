@@ -39,6 +39,7 @@ const UserInfoForm: React.FC = () => {
   const {
     control,
     handleSubmit,
+    watch,
     reset,
     formState: { errors },
   } = useForm<UserInfoSchemaType>({
@@ -46,7 +47,6 @@ const UserInfoForm: React.FC = () => {
     defaultValues: initialFormData,
   })
 
-  const [formData, setFormData] = useState<Partial<IUserRebateInfoProps>>(initialFormData)
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -68,29 +68,44 @@ const UserInfoForm: React.FC = () => {
   const handleFormSubmit = async (data: UserInfoSchemaType) => {
     setError(null)
     setConfirmationNumber(null)
+    setIsLoading(true)
 
     try {
+      const formData = new FormData()
+
+      Object.keys(data).forEach(key => {
+        const value = (data as Record<string, unknown>)[key]
+        if (key === 'receipt_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (Array.isArray(value)) {
+          value.forEach((item: string) => formData.append(key, item))
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, value as string)
+        }
+      })
+
       const response = await fetch('/api/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: formData,
       })
 
       if (!response.ok) {
         const errorData = await response.json()
-        setError(errorData.error || 'Submission failed')
-        setIsLoading(false)
-        return
+        throw new Error(errorData.error || 'Submission failed')
       }
 
       const responseData = await response.json()
       setConfirmationNumber(responseData.confirmationNumber)
       setIsModalOpen(true)
-      reset() // Reset form to initial values
-      setIsLoading(false)
-    } catch (error) {
+      reset()
+    } catch (error: unknown) {
       console.error('Error submitting form:', error)
-      setError('An unexpected error occurred')
+      if (error instanceof Error) {
+        setError(error.message)
+      } else {
+        setError('An unexpected error occurred')
+      }
+    } finally {
       setIsLoading(false)
     }
   }
@@ -106,34 +121,11 @@ const UserInfoForm: React.FC = () => {
     setIsLoading(false)
   }
 
-  const handleImageUpload = async (file: File) => {
-    console.log('handleImageUpload entered')
-    try {
-      // 1️⃣ Request a signed URL from your API
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fileType: file.type }),
-      })
-
-      // console.log('response', response)
-
-      if (!response.ok) {
-        console.log('Failed to get signed URL', response)
-      } else {
-        console.log('Success to get signed URL', response)
-      }
-    } catch (error) {
-      console.log('Image upload error:', error)
-      setError('Error uploading the image.')
-    }
-  }
-
   return (
     <>
       {isLoading && <Loader />}
       <form onSubmit={handleSubmit(onSubmit)} className={styles['c-user-form']} encType='multipart/form-data'>
-        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields  control={control} errors={errors} handleImageUpload={handleImageUpload} onScrollComplete={handleFieldsScroll} />} />
+        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} onScrollComplete={handleFieldsScroll} watch={watch} reset={reset} />} />
         <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
       </form>
 

@@ -1,6 +1,6 @@
-import { IAdminPortalProps } from '@/components/adminPortal/AdminPortal'
+import { IUserRebateInfoProps } from "./userRebateInfoTypes"
 
-export const generateCSV = (rebates: IAdminPortalProps[]) => {
+export const generateCSV = (rebates: IUserRebateInfoProps[]) => {
   enum rebateFields {
     product_code = 'Product Code',
     redeem_code = 'Redeem Code',
@@ -60,7 +60,7 @@ export const generateCSV = (rebates: IAdminPortalProps[]) => {
     const row = csvColumns.map(column => {
       let value: any = ''
 
-      const fieldKey = Object.keys(rebateFields).find(key => rebateFields[key as keyof typeof rebateFields] === column) as keyof IAdminPortalProps | undefined
+      const fieldKey = Object.keys(rebateFields).find(key => rebateFields[key as keyof typeof rebateFields] === column) as keyof IUserRebateInfoProps | undefined
 
       if (fieldKey) {
         value = rebate[fieldKey]
