@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { IInterestTypes } from '../../utils/userRebateInfoTypes'
 import styles from './UserInfoForm.module.scss'
-import { Checkbox, CheckboxImage, Input, InputImage, TextArea } from '../common/formElements/FormElements'
+import { CheckboxImage, Input, InputImage, SubscribeCheckbox, TextArea } from '../common/formElements/FormElements'
 import { Controller } from 'react-hook-form'
 import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
@@ -12,7 +12,6 @@ interface UserInfoFieldsProps {
 }
 
 const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
-
   const isFieldRequired = (fieldName: keyof UserInfoSchemaType) => {
     const fieldSchema = userInfoSchema.shape[fieldName]
     return !fieldSchema.isOptional()
@@ -59,26 +58,26 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
         </div>
       </div>
 
-      {/* Receipt Image */}
-      <InputImage name='receipt_image' control={control} label='Receipt Image:' error={errors.receipt_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
-
-      {/* Coupon Image */}
-      <InputImage name='coupon_image' control={control} label='Coupon Image:' error={errors.coupon_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
-
-      {/* Barcode Image */}
-      <InputImage name='product_barcode_image' control={control} label='Barcode Image:' error={errors.product_barcode_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
-
       {/* Comments */}
       <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
 
+      {/* Receipt Image */}
+      <InputImage name='receipt_image' className='w-30' control={control} label='Receipt Image' error={errors.receipt_image} />
+
+      {/* Coupon Image */}
+      <InputImage name='coupon_image' className='w-30' control={control} label='Coupon Image' error={errors.coupon_image} />
+
+      {/* Barcode Image */}
+      <InputImage name='product_barcode_image' className='w-30' control={control} label='Barcode Image' error={errors.product_barcode_image} />
+
       {/* Product Code */}
-      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='product_code' type='text' label='Product Code:' />
+      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-20`} name='product_code' type='text' label='Product Code:' />
 
       {/* Redeem Code */}
-      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='redeem_code' type='text' label='Redeem Code:' />
+      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-20`} name='redeem_code' type='text' label='Redeem Code:' />
 
       {/* Subscription Checkbox */}
-      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name='subscription' label='Subscribe to newsletter' />
+      <SubscribeCheckbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-20`} name='subscription' label='Get our newsletter' />
     </div>
   )
 }

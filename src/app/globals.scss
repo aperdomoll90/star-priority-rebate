@@ -1,6 +1,8 @@
 :root {
   --whiteTransparent: rgba(255, 255, 255, 0.927);
-  --blackTransparent: rgba(0, 0, 0, 0.782);
+  --blackTransparent900: rgba(0, 0, 0, 0.903);
+  --blackTransparent800: rgba(0, 0, 0, 0.782);
+  --blackTransparent500: rgba(0, 0, 0, 0.547);
   --white100: #ffffff; /* Very light gray (white) */
 
   --gray100: #fbfbfb; /* Very light gray (white) */
@@ -272,6 +274,10 @@ button:disabled:hover {
   flex: 1 1 100%; /* Stack fields on mobile by default */
   min-width: 200px;
 }
+.w-30 {
+  flex: 1 1 100%; /* Stack fields on mobile by default */
+  min-width: 100px;
+}
 
 .w-20 {
   flex: 1 1 100%; /* Stack fields on mobile by default */
@@ -281,6 +287,10 @@ button:disabled:hover {
 /* Mobile-first styles */
 
 @media (min-width: 700px) {
+  .w-100 {
+    flex: 1 1 100%; /* Takes 100% of the row on larger screens */
+    min-width: 200px;
+  }
   .w-50 {
     flex: 1 1 45%; /* Takes 50% of the row on larger screens */
   }
@@ -289,12 +299,11 @@ button:disabled:hover {
     flex: 2 1 40%; /* Takes 40% of the row on larger screens */
   }
 
-  .w-20 {
-    flex: 1 1 20%; /* Takes 20% of the row on larger screens */
+  .w-30 {
+    flex: 1 1 30%; /* Takes 33.33% of the row on larger screens */
   }
 
-  .w-100 {
-    flex: 1 1 100%; /* Takes 100% of the row on larger screens */
-    min-width: 200px;
+  .w-20 {
+    flex: 1 1 20%; /* Takes 20% of the row on larger screens */
   }
 }

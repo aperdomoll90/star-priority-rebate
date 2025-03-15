@@ -46,9 +46,6 @@ export interface InputImageProps {
   label: string;
   className?: string;
   error?: any;
-  accept?: string;
-  maxWidth?: string;
-  maxHeight?: string;
 }
 
 

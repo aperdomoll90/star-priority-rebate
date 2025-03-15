@@ -1,8 +1,10 @@
 .checkbox-container {
   display: flex;
+  align-self: flex-end;
+  padding-bottom: 0.5rem;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: center !important;
   gap: 0.5rem;
 
   label {
@@ -11,6 +13,61 @@
     white-space: nowrap;
     width: auto;
     gap: 0.5rem;
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+.c-subscribe-checkbox-container {
+  display: flex;
+  position: relative;
+
+  &__content {
+    position: absolute;
+    top: 1.5rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center !important;
+    gap: 0.5rem;
+
+    label {
+      width: auto;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      gap: 0.5rem;
+    }
+    input {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--gray300);
+      border-radius: 4px;
+      background-color: var(--gray100);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      :hover {
+        border-color: var(--gray800);
+      }
+
+      &:checked {
+        background-color: var(--gray800);
+        border-color: var(--gray800);
+
+        &::before {
+          content: '✔';
+          display: block;
+          text-align: center;
+          color: var(--gray100);
+        }
+      }
+    }
   }
 }
 
@@ -67,7 +124,6 @@
     transform: scale(1.1);
   }
 }
-
 
 @media (min-width: 700px) {
   .checkbox-image-container {
