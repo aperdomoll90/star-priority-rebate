@@ -20,6 +20,8 @@ export const userInfoSchema = z.object({
   redeem_code: z.string().min(1, "Redeem code is required"),
   subscription: z.boolean(),
   receipt_image: z.instanceof(File).optional(),
+  coupon_image: z.instanceof(File).optional(),
+  product_barcode_image: z.instanceof(File).optional(),
 });
 
 export type UserInfoSchemaType = z.infer<typeof userInfoSchema>;

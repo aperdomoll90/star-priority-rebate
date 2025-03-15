@@ -33,6 +33,8 @@ const initialFormData = {
   product_code: '',
   redeem_code: '',
   receipt_image: undefined,
+  coupon_image: undefined,
+  product_barcode_image: undefined,
 }
 
 const UserInfoForm: React.FC = () => {
@@ -76,6 +78,10 @@ const UserInfoForm: React.FC = () => {
       Object.keys(data).forEach(key => {
         const value = (data as Record<string, unknown>)[key]
         if (key === 'receipt_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (key === 'coupon_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (key === 'product_barcode_image' && value instanceof File) {
           formData.append(key, value)
         } else if (Array.isArray(value)) {
           value.forEach((item: string) => formData.append(key, item))

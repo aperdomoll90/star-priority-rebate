@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IInterestTypes } from '../../utils/userRebateInfoTypes'
 import styles from './UserInfoForm.module.scss'
-import { Checkbox, CheckboxImage, Input, TextArea } from '../common/formElements/FormElements'
+import { Checkbox, CheckboxImage, Input, InputImage, TextArea } from '../common/formElements/FormElements'
 import { Controller } from 'react-hook-form'
 import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
@@ -29,7 +29,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
       }
     }
   }, [receiptImageWatch])
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (scrollableRef.current) {
@@ -80,7 +80,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
           {Object.values(IInterestTypes).map(interest => (
             <Controller
               key={interest}
-              name="interests"
+              name='interests'
               control={control}
               render={({ field }) => (
                 <CheckboxImage
@@ -89,9 +89,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
                   label={interest}
                   checked={(field.value || []).includes(interest)}
                   onChange={() => {
-                    const updatedInterests = field.value.includes(interest)
-                      ? field.value.filter((i: IInterestTypes) => i !== interest)
-                      : [...field.value, interest]
+                    const updatedInterests = field.value.includes(interest) ? field.value.filter((i: IInterestTypes) => i !== interest) : [...field.value, interest]
                     field.onChange(updatedInterests)
                   }}
                 />
@@ -102,51 +100,26 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
       </div>
 
       {/* Receipt Image */}
-      <Controller
-        name="receipt_image"
-        control={control}
-        defaultValue=""
-        render={({ field: { onChange } }) => (
-          <div>
-            <label>
-              Receipt Image:
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                id="receipt_image"
-                onChange={(e) => {
-                  const file = e.target.files?.[0] || null
-                  onChange(file)
-                  if (file) {
-                    const previewUrl = URL.createObjectURL(file)
-                    setImagePreview(previewUrl)
-                  } else {
-                    setImagePreview(null)
-                  }
-                }}
-              />
-            </label>
-            {imagePreview && (
-              <div>
-                <img src={imagePreview} alt="Receipt Preview" style={{ maxWidth: '200px', maxHeight: '200px' }} />
-              </div>
-            )}
-          </div>
-        )}
-      />
+      <InputImage name='receipt_image' control={control} label='Receipt Image:' error={errors.receipt_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
 
+      {/* Coupon Image */}
+      <InputImage name='coupon_image' control={control} label='Coupon Image:' error={errors.coupon_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
+
+      {/* Barcode Image */}
+      <InputImage name='product_barcode_image' control={control} label='Barcode Image:' error={errors.product_barcode_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
+
+    
       {/* Comments */}
-      <TextArea control={control} name="comments1" label="Comments:" error={errors.comments1} />
+      <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
 
       {/* Product Code */}
-      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name="product_code" type="text" label="Product Code:" />
+      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='product_code' type='text' label='Product Code:' />
 
       {/* Redeem Code */}
-      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name="redeem_code" type="text" label="Redeem Code:" />
+      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='redeem_code' type='text' label='Redeem Code:' />
 
       {/* Subscription Checkbox */}
-      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name="subscription" label="Subscribe to newsletter" />
+      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name='subscription' label='Subscribe to newsletter' />
     </div>
   )
 }
