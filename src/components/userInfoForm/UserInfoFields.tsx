@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { IInterestTypes } from '../../utils/userRebateInfoTypes'
 import styles from './UserInfoForm.module.scss'
 import { Checkbox, CheckboxImage, Input, InputImage, TextArea } from '../common/formElements/FormElements'
@@ -9,49 +9,9 @@ import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 interface UserInfoFieldsProps {
   control: any
   errors?: any
-  onScrollComplete: (isComplete: boolean) => void
-  watch?: (fieldName: keyof UserInfoSchemaType) => any
-  reset?: () => void
 }
 
-const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScrollComplete, watch }) => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const scrollableRef = useRef<HTMLDivElement>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const receiptImageWatch = watch?.('receipt_image')
-
-  useEffect(() => {
-    if (!receiptImageWatch) {
-      setImagePreview(null)
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
-    }
-  }, [receiptImageWatch])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollableRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollableRef.current
-        if (scrollHeight - scrollTop <= clientHeight + 2 * parseFloat(getComputedStyle(document.documentElement).fontSize)) {
-          onScrollComplete(true)
-        } else {
-          onScrollComplete(false)
-        }
-      }
-    }
-
-    const scrollableElement = scrollableRef.current
-    if (scrollableElement) {
-      scrollableElement.addEventListener('scroll', handleScroll)
-    }
-    return () => {
-      if (scrollableElement) {
-        scrollableElement.removeEventListener('scroll', handleScroll)
-      }
-    }
-  }, [onScrollComplete])
+const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
 
   const isFieldRequired = (fieldName: keyof UserInfoSchemaType) => {
     const fieldSchema = userInfoSchema.shape[fieldName]
@@ -59,7 +19,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
   }
 
   return (
-    <div ref={scrollableRef} className={styles['c-user-form__input-container']}>
+    <div className={styles['c-user-form__input-container']}>
       <Input className='w-50' control={control} name='first_name' type='text' label='First Name:' error={errors.first_name} required={isFieldRequired('first_name')} />
       <Input className='w-50' control={control} name='last_name' type='text' label='Last Name:' error={errors.last_name} required={isFieldRequired('last_name')} />
       <Input className='w-50' control={control} name='email' type='email' label='Email:' error={errors.email} required={isFieldRequired('email')} />
@@ -108,7 +68,6 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors, onScro
       {/* Barcode Image */}
       <InputImage name='product_barcode_image' control={control} label='Barcode Image:' error={errors.product_barcode_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
 
-    
       {/* Comments */}
       <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
 

@@ -64,14 +64,15 @@ export const InputImage: React.FC<InputImageProps> = ({
 }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
+  
   useEffect(() => {
-    return () => {
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview)
+    if (!control._formValues[name]) {
+      setImagePreview(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
       }
     }
-  }, [imagePreview])
+  }, [control._formValues[name], name])
 
   return (
     <div className={`${inputStyles['form-group']} ${className}`}>
