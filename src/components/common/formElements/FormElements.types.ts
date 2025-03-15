@@ -40,6 +40,18 @@ export interface CheckboxImageProps {
   className?: string;
 }
 
+export interface InputImageProps {
+  name: string;
+  control: any;
+  label: string;
+  className?: string;
+  error?: any;
+  accept?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+}
+
+
 
 export const interestImages: Record<IInterestTypes, string> = {
   [IInterestTypes.automotive]: '/automobile.png',

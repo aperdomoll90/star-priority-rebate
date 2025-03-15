@@ -19,7 +19,9 @@ export const userInfoSchema = z.object({
   product_code: z.string().min(1, "Product code is required"),
   redeem_code: z.string().min(1, "Redeem code is required"),
   subscription: z.boolean(),
-  receipt_image: z.instanceof(File).optional(),
+  receipt_image: z.instanceof(File),
+  coupon_image: z.instanceof(File),
+  product_barcode_image: z.instanceof(File),
 });
 
 export type UserInfoSchemaType = z.infer<typeof userInfoSchema>;

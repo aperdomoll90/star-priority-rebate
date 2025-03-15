@@ -21,8 +21,8 @@ const s3 = new S3Client({
   },
 })
 
-async function uploadFileToS3(file: File, userId: string): Promise<string> {
-  const uniqueFileName = `${userId}receiptimage`;
+async function uploadFileToS3(file: File, userId: string, label:string): Promise<string> {
+  const uniqueFileName = `${userId}-${label}`;
 
   const fileBuffer = await file.arrayBuffer();
   const command = new PutObjectCommand({
@@ -63,10 +63,23 @@ export async function POST(req: NextRequest) {
     const dateAdded = new Date()
 
     const receiptImage = formData.get('receipt_image') as File | null
+    const couponImage = formData.get('coupon_image') as File | null
+    const barcodeImage = formData.get('product_barcode_image') as File | null
+
     let receiptImageUrl = ''
+    let couponImageUrl = ''
+    let barcodeImageUrl = ''
 
     if (receiptImage) {
-      receiptImageUrl = await uploadFileToS3(receiptImage, uniqueId)
+      receiptImageUrl = await uploadFileToS3(receiptImage, uniqueId, "receiptimage" )
+    }
+
+    if (couponImage) {
+      couponImageUrl = await uploadFileToS3(couponImage, uniqueId, "couponimage")
+    }
+
+    if (barcodeImage) {
+      barcodeImageUrl = await uploadFileToS3(barcodeImage, uniqueId, "barcodeimage")
     }
 
     const interests = formData.getAll('interests') as string[]
@@ -93,8 +106,8 @@ export async function POST(req: NextRequest) {
       redeem_code: formData.get('redeem_code') as string,
       exported: false,
       receipt_image: receiptImageUrl,
-      coupon_image: `https://picsum.photos/seed/200/300`,
-      product_barcode_image: `https://picsum.photos/seed/200/300`,
+      coupon_image: couponImageUrl,
+      product_barcode_image: barcodeImageUrl,
     }
 
     await db.collection('rebate_transactions').insertOne(formDataObject as IUserRebateInfoProps)

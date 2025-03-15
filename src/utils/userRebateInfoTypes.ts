@@ -11,7 +11,7 @@ export enum IInterestTypes {
 }
 
 export interface IUserRebateInfoProps {
-  user_id?: string;
+  user_id?: string
   first_name?: string
   last_name?: string
   address?: string
@@ -29,11 +29,9 @@ export interface IUserRebateInfoProps {
   subscription?: boolean
   product_code?: string
   redeem_code?: string
-  receipt_image?: File | string; 
-  coupon_image?: string
-  product_barcode_image?: string
+  receipt_image?: File | string
+  coupon_image?: File | string
+  product_barcode_image?: File | string
   date_added?: Date
   exported?: boolean
 }
-
-

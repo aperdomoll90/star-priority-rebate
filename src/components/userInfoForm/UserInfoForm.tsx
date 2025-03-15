@@ -33,6 +33,8 @@ const initialFormData = {
   product_code: '',
   redeem_code: '',
   receipt_image: undefined,
+  coupon_image: undefined,
+  product_barcode_image: undefined,
 }
 
 const UserInfoForm: React.FC = () => {
@@ -41,10 +43,11 @@ const UserInfoForm: React.FC = () => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<UserInfoSchemaType>({
     resolver: zodResolver(userInfoSchema),
     defaultValues: initialFormData,
+    mode: 'onTouched',
   })
 
   const [confirmationNumber, setConfirmationNumber] = useState<string | null>(null)
@@ -54,11 +57,6 @@ const UserInfoForm: React.FC = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState<boolean>(false)
   const [isCaptchaVisible, setIsCaptchaVisible] = useState<boolean>(false)
   const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState<boolean>(false)
-  const [isFieldsScrollComplete, setIsFieldsScrollComplete] = useState(false)
-
-  const handleFieldsScroll = (isComplete: boolean) => {
-    setIsFieldsScrollComplete(isComplete)
-  }
 
   const onSubmit = async (data: UserInfoSchemaType) => {
     setIsLoading(true)
@@ -76,6 +74,10 @@ const UserInfoForm: React.FC = () => {
       Object.keys(data).forEach(key => {
         const value = (data as Record<string, unknown>)[key]
         if (key === 'receipt_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (key === 'coupon_image' && value instanceof File) {
+          formData.append(key, value)
+        } else if (key === 'product_barcode_image' && value instanceof File) {
           formData.append(key, value)
         } else if (Array.isArray(value)) {
           value.forEach((item: string) => formData.append(key, item))
@@ -125,8 +127,8 @@ const UserInfoForm: React.FC = () => {
     <>
       {isLoading && <Loader />}
       <form onSubmit={handleSubmit(onSubmit)} className={styles['c-user-form']} encType='multipart/form-data'>
-        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} onScrollComplete={handleFieldsScroll} watch={watch} reset={reset} />} />
-        <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isFieldsScrollComplete} />
+        <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} />} />
+        <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isValid} />
       </form>
 
       {isCaptchaVisible && (

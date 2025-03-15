@@ -1,5 +1,5 @@
-import React from 'react'
-import { CheckboxImageProps, CheckboxInputProps, FormInputProps, interestImages, TextAreaProps } from './FormElements.types'
+import React, { useEffect, useRef, useState } from 'react'
+import { CheckboxImageProps, CheckboxInputProps, FormInputProps, InputImageProps, interestImages, TextAreaProps } from './FormElements.types'
 
 import inputStyles from './FormInput.module.scss'
 import textAreaStyles from './TextArea.module.scss'
@@ -51,3 +51,64 @@ export const CheckboxImage: React.FC<CheckboxImageProps> = ({ id, name, label, c
     </div>
   )
 }
+
+export const InputImage: React.FC<InputImageProps> = ({ 
+  name, 
+  control, 
+  label, 
+  className = '', 
+  error,
+  accept = "image/*",
+  maxWidth = '200px',
+  maxHeight = '200px'
+}) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  
+  useEffect(() => {
+    if (!control._formValues[name]) {
+      setImagePreview(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }, [control._formValues[name], name])
+
+  return (
+    <div className={`${inputStyles['form-group']} ${className}`}>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({ field: { onChange, value } }) => (
+          <div>
+            <label htmlFor={name}>{label}</label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={accept}
+              id={name}
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null
+                onChange(file)
+                if (file) {
+                  const previewUrl = URL.createObjectURL(file)
+                  setImagePreview(previewUrl)
+                } else {
+                  setImagePreview(null)
+                }
+              }}
+            />
+            {imagePreview && (
+              <div>
+                <img src={imagePreview} alt={`${label} Preview`} style={{ maxWidth, maxHeight }} />
+              </div>
+            )}
+          </div>
+        )}
+      />
+      {error && <span className={inputStyles.error}>{error.message}</span>}
+    </div>
+  )
+}
+
