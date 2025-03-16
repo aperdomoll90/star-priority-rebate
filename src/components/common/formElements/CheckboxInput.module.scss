@@ -72,8 +72,8 @@
 }
 
 .c-subscribe-svg {
-transform: translateY(1rem);
-  
+  transform: translateY(1rem);
+
   &[data-active='true'] {
     .c-subscribe-svg {
       &__envelope path {
@@ -86,7 +86,7 @@ transform: translateY(1rem);
       }
 
       &__right-line path {
-        transform: translateX(-20rem) ;
+        transform: translateX(-20rem);
       }
 
       &__left-line path {
@@ -124,7 +124,7 @@ transform: translateY(1rem);
     stroke: var(--gray800);
     stroke-width: 2;
     transition: all 0.4s ease-in-out;
-    transition-delay: 0.2s; 
+    transition-delay: 0.2s;
   }
 
   &__bottom-right-line path {
@@ -158,6 +158,7 @@ transform: translateY(1rem);
   cursor: pointer;
   user-select: none;
   overflow: hidden;
+  box-shadow: 0 0 10px 2px var(--blackTransparent200);
 
   img {
     width: 100%;
@@ -172,7 +173,7 @@ transform: translateY(1rem);
     filter: blur(5px) hue-rotate(180deg) brightness(50%);
   }
 
-  .checked {
+  &[data-checked='true'] img {
     outline: 3px solid var(--blue500);
     outline-offset: -1rem;
   }
@@ -180,7 +181,7 @@ transform: translateY(1rem);
   label {
     position: absolute;
     margin: 2rem;
-    font-size: 1rem;
+    font-size: 70%;
     text-transform: uppercase;
     color: var(--gray100);
     transition: all 0.2s ease-in-out;
@@ -196,6 +197,6 @@ transform: translateY(1rem);
 
 @media (min-width: 700px) {
   .checkbox-image-container {
-    width: calc(100% / 3.2);
+    width: calc(100% / 12.3);
   }
 }

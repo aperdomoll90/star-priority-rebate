@@ -109,14 +109,21 @@ export const Checkbox: React.FC<CheckboxInputProps> = ({ name, control, label, c
 }
 
 export const CheckboxImage: React.FC<CheckboxImageProps> = ({ id, name, label, checked, onChange, className = '' }) => {
-  const handleClick = () => {
+  const [isChecked, setIsChecked] = useState(checked)
+
+  useEffect(() => {
+    setIsChecked(checked)
+  }, [checked])
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked)
     onChange()
   }
 
   return (
-    <div className={`${checkboxStyles['checkbox-image-container']} ${className}`} onClick={handleClick}>
-      <input type='checkbox' id={id} name={name} checked={checked} onChange={onChange} className={checkboxStyles['hidden-checkbox']} />
-      <img src={interestImages[label as IInterestTypes]} alt={label} className={`${checkboxStyles.checkboxImage} ${checked ? checkboxStyles.checked : ''}`} />
+    <div className={`${checkboxStyles['checkbox-image-container']} ${className}`} onClick={handleCheckboxChange} data-checked={isChecked}>
+      <input type='checkbox' id={id} name={name} checked={isChecked} onChange={handleCheckboxChange} className={checkboxStyles['hidden-checkbox']} />
+      <img src={interestImages[label as IInterestTypes]} alt={label} className={checkboxStyles.checkboxImage} />
       <label htmlFor={id}>{label}</label>
     </div>
   )

@@ -27,6 +27,7 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 1.5rem;
+      padding-left: 0.5rem;
 
       &--checkbox-container {
         display: flex;
@@ -34,7 +35,7 @@
         justify-content: flex-start;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 1rem;
       }
     }
 
@@ -66,9 +67,12 @@
 
 @media (min-width: 700px) {
   .c-user-form {
-    &__input-container--interests {
-      &--checkbox-container {
-        gap: 2.3rem;
+    &__input-container {
+      padding: 1rem;
+      &--interests {
+        &--checkbox-container {
+          gap: 2.3rem;
+        }
       }
     }
   }

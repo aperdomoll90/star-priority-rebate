@@ -6,9 +6,11 @@
   overflow: hidden;
   background: var(--gray100);
   transition: border-color 0.3s;
+  box-shadow: 0 0 10px 2px var(--blackTransparent200);
 
   &:hover {
     border-color: var(--gray400);
+    box-shadow: 0 0 10px 2px var(--blackTransparent500);
   }
 
   &__label {
