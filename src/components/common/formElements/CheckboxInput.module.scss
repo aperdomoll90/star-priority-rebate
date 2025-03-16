@@ -78,6 +78,7 @@ transform: translateY(1rem);
     .c-subscribe-svg {
       &__envelope path {
         fill: var(--blue000);
+        stroke-width: 2;
         transform: translateX(12rem) translateY(-1rem) scale(1.5);
       }
       &__bottom-right-line path {
