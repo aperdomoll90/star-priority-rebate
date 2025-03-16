@@ -71,6 +71,74 @@
   }
 }
 
+.c-subscribe-svg {
+transform: translateY(1rem);
+  
+  &[data-active='true'] {
+    .c-subscribe-svg {
+      &__envelope path {
+        fill: var(--blue000);
+        transform: translateX(12rem) translateY(-1rem) scale(1.5);
+      }
+      &__bottom-right-line path {
+        transform: translateX(-20rem) translateY(1rem);
+      }
+
+      &__right-line path {
+        transform: translateX(-20rem) ;
+      }
+
+      &__left-line path {
+        transform: translateX(-7rem);
+      }
+
+      &__bottom-left-line path {
+        transform: translateX(-6rem) translateY(1rem);
+      }
+    }
+  }
+
+  /* Default styles for SVG elements */
+  &__envelope path {
+    fill: var(--gray100);
+    stroke: var(--gray800);
+    stroke-width: 3;
+    transition: all 0.4s ease-in-out;
+    transition-delay: 0.2s;
+  }
+
+  &__left-line path {
+    stroke: var(--gray800);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+
+  &__bottom-left-line path {
+    stroke: var(--gray800);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+
+  &__right-line path {
+    stroke: var(--gray800);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+    transition-delay: 0.2s; 
+  }
+
+  &__bottom-right-line path {
+    stroke: var(--gray800);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+}
+
+@media (min-width: 700px) {
+  .c-subscribe-svg {
+    transform: translateY(0);
+  }
+}
+
 .hidden-checkbox {
   position: absolute;
   opacity: 0;
