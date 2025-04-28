@@ -7,7 +7,7 @@
   display: flex;
   padding: 2rem;
   gap: 1rem;
-  background-color: var(--backgroundLight);
+  // background-color: var(--backgroundLight);
 
   &__input-container {
     max-width: 100%;
@@ -19,7 +19,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 1.8rem;
     padding-bottom: 1rem;
 
     &--interests {

@@ -1,25 +1,53 @@
 .form-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-direction: column;
-    align-items: flex-start;
-  
-    label {
-      display: flex;
-      align-items: center;
-      white-space: wrap;
-      width: auto;
-      gap: 0.5rem;
-      color: var(--textPrimary);
+  position: relative;
+  height: 2rem;
+  line-height: 2rem;
+
+  input {
+    position: absolute;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    padding: 0 1rem;
+    line-height: 2rem;
+    border-radius: 10px;
+    border: 2px solid var(--inputEdgeColor);
+    background: transparent;
+    transition: all 0.3s ease;
+    z-index: 10;
+
+    &:focus {
+      border: 2px solid var(--inputEdgeColorFocus);
+      background: var(--backgroundWhite);
     }
-  
-    input {
-      width: 100%;
-      padding: 0.4rem;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      background-color: var(--inputBgColor);
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      color: var(--inputEdgeColorFocus);
+      background: var(--backgroundWhite);
+      transform: translate(-2px, -6px) scale(0.88);
+      padding: 0 0.5rem;
+      line-height: 0.6rem;
+      z-index: 11;
     }
   }
+
+  label {
+    position: absolute;
+    font-size: 0.8rem;
+    color: var(--textPrimary);
+    margin: 0 1rem;
+    transition: all 0.2s ease;
+    transform: translate(0, 0) scale(1);
+    transform-origin: left center;
+    z-index: 1;
+  }
+  span {
+    color: var(--red400);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    position: absolute;
+    letter-spacing: 0.6px;
+    transform: translate(.5rem, 1.5rem);
+  }
+}

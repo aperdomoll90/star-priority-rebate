@@ -49,8 +49,9 @@ const SubscribeSVG = ({ isActive }: { isActive: boolean }) => {
 export const Input: React.FC<FormInputProps> = ({ name, control, label, type, className = '', required = false, error }) => {
   return (
     <div className={`${inputStyles['form-group']} ${className}`}>
+      <Controller name={name} control={control} render={({ field }) => <input id={name} {...field} type={type} required={required} placeholder=' ' />} />
       <label htmlFor={name}>{label}</label>
-      <Controller name={name} control={control} render={({ field }) => <input id={name} {...field} type={type} required={required} />} />
+      <span className={inputStyles.error}>{error?.message}</span>
       {error && <span className={inputStyles.error}>{error.message}</span>}
     </div>
   )

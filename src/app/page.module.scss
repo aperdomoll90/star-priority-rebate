@@ -2,7 +2,7 @@
   height: calc(100dvh - 0rem);
   width: calc(100dvw - 0.2rem);
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 20px;
   position: relative;
   display: flex;
   flex-direction: column-reverse;
@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 1rem;
 
     > h1,
@@ -28,7 +29,6 @@
       align-self: flex-start;
     }
     > h1 {
-      text-transform: uppercase;
       font-size: 2.6rem;
       letter-spacing: 0.8px;
       font-weight: 900;
@@ -43,40 +43,40 @@
 
 @media (min-width: 700px) {
   .c-main {
-    width: calc(100dvw - 4rem);
+    width: 80%;
     height: calc(100dvh - 4rem);
     flex-direction: row;
     gap: 0;
 
-    &__column {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
     &__content-column {
+      height: 100%;
+      width: 50%;
       flex: 2.7;
-      padding: 1.2rem;
     }
 
     &__banner {
-      width: 95%;
-      height: 95%;
-      border-radius: 10px;
-      background: var(--blue800);
-      padding: 2rem;
-
+      height: 100%;
+      width:50%;
+      border-radius: 25% 0 0 25%;
+      background: var(--blue300);
+      padding-top: 20%;
+      justify-content: flex-start;
 
       > h1,
       > h4,
       > p {
         color: var(--white100);
+        align-self: auto;
       }
       > h1 {
-        letter-spacing: 6px;
-        font-size: 4rem;
+        letter-spacing: 3px;
+        font-size: 2.5rem;
+      }
+      > h4 {
+        font-size: 1.1rem;
+        font-weight: 400;
+        letter-spacing: 3px;
+
       }
 
       p {
@@ -85,16 +85,3 @@
     }
   }
 }
-
-// @media (min-width: 900px) {
-//   .main {
-//     width: 30dvw;
-//   }
-// }
-
-// Ipad Pro
-// @media (min-width: 1000px) and (min-height: 1366px) {
-//   .main {
-//     width: 70dvw;
-//   }
-// }
