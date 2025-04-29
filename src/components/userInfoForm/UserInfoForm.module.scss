@@ -1,54 +1,52 @@
 .c-user-form {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
   position: relative;
-  flex-direction: column;
   display: flex;
-  padding: 2rem;
+  flex-direction: row;
   gap: 1rem;
-  // background-color: var(--backgroundLight);
-
-  &__input-container {
-    max-width: 100%;
-    max-height: 100%;
-    overflow: scroll;
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1.8rem;
-    padding-bottom: 1rem;
-
-    &--interests {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.5rem;
-      padding-left: 0.5rem;
-
-      &--checkbox-container {
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-    }
-
-    &--checkbox {
-      justify-content: flex-start !important;
-    }
-    &--input {
-      flex-wrap: wrap;
-    }
-  }
 
   &__submit-button {
     width: 100%;
+    margin-top: 2rem;
+  }
+  &__content-column {
+    height: 100%;
+  }
+
+  &__banner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2.5rem;
+
+    &--code-row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0 1rem 0;
+    }
+
+    > h1,
+    > h4,
+    > p {
+      align-self: flex-start;
+    }
+    > h1 {
+      font-size: 2.6rem;
+      letter-spacing: 0.8px;
+      font-weight: 900;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
   }
 }
 
@@ -67,12 +65,37 @@
 
 @media (min-width: 700px) {
   .c-user-form {
-    &__input-container {
-      padding: 1rem;
-      &--interests {
-        &--checkbox-container {
-          gap: 2.3rem;
-        }
+    &__content-column {
+      height: 100%;
+      width: 50%;
+    }
+
+    &__banner {
+      height: 100%;
+      width: 50%;
+      border-radius: 25% 0 0 25%;
+      background: var(--blue300);
+      padding-top: 20%;
+      justify-content: flex-start;
+
+      > h1,
+      > h4,
+      > p {
+        color: var(--white100);
+        align-self: auto;
+      }
+      > h1 {
+        letter-spacing: 3px;
+        font-size: 2.5rem;
+      }
+      > h4 {
+        font-size: 1.1rem;
+        font-weight: 400;
+        letter-spacing: 3px;
+      }
+
+      p {
+        margin-top: 2rem;
       }
     }
   }

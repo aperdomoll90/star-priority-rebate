@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { IInterestTypes } from '../../utils/userRebateInfoTypes'
-import styles from './UserInfoForm.module.scss'
+import styles from './UserInfoFields.module.scss'
 import { CheckboxImage, Input, InputImage, SubscribeCheckbox, TextArea } from '../common/formElements/FormElements'
 import { Controller } from 'react-hook-form'
 import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
@@ -18,7 +18,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
   }
 
   return (
-    <div className={styles['c-user-form__input-container']}>
+    <div className={styles['c-content-column']}>
       <Input className='w-50' control={control} name='first_name' type='text' label='First Name:' error={errors.first_name} required={isFieldRequired('first_name')} />
       <Input className='w-50' control={control} name='last_name' type='text' label='Last Name:' error={errors.last_name} required={isFieldRequired('last_name')} />
       <Input className='w-50' control={control} name='email' type='email' label='Email:' error={errors.email} required={isFieldRequired('email')} />
@@ -33,9 +33,9 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
       <Input className='w-20' control={control} name='store_city' type='text' label='Store City:' error={errors.store_city} required={isFieldRequired('store_city')} />
 
       {/* Interests */}
-      <div className={styles['c-user-form__input-container--interests']}>
+      <div className={styles['c-content-column--interests']}>
         <p>Interests:</p>
-        <div className={styles['c-user-form__input-container--interests--checkbox-container']}>
+        <div className={styles['c-content-column--interests--checkbox-container']}>
           {Object.values(IInterestTypes).map(interest => (
             <Controller
               key={interest}
@@ -57,10 +57,6 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
           ))}
         </div>
       </div>
-
-      {/* Comments */}
-      <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
-
       {/* Receipt Image */}
       <InputImage name='receipt_image' className='w-30' control={control} label='Receipt Image' error={errors.receipt_image} />
 
@@ -70,14 +66,8 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
       {/* Barcode Image */}
       <InputImage name='product_barcode_image' className='w-30' control={control} label='Barcode Image' error={errors.product_barcode_image} />
 
-      {/* Product Code */}
-      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-20`} name='product_code' type='text' label='Product Code:' />
-
-      {/* Redeem Code */}
-      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-20`} name='redeem_code' type='text' label='Redeem Code:' />
-
-      {/* Subscription Checkbox */}
-      <SubscribeCheckbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-20`} name='subscription' label='Get our newsletter' />
+      {/* Comments */}
+      <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
     </div>
   )
 }
