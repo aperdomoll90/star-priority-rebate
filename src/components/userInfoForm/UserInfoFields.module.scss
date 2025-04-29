@@ -1,7 +1,6 @@
 .c-content-column {
   width: auto;
-  height: 90%;
-  overflow: scroll;
+  height: 100%;
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -9,7 +8,9 @@
   align-items: center;
   justify-content: flex-start;
   gap: 2rem 0.5rem;
-  margin: 3rem 0.5rem 3rem 3rem;
+  padding: 3rem 1rem 2rem 3rem;
+  overflow-y: scroll;
+  scrollbar-width: none;
 
   &--interests {
     display: flex;

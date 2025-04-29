@@ -5,15 +5,14 @@ import Modal from '../common/modal/modal'
 import Button from '../common/button/button'
 import styles from './UserInfoForm.module.scss'
 import modalStyles from '../common/modal/modal.module.scss'
-import { createValidationRules } from '@/utils/useFormValidation'
 import Loader from '../common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 import UserInfoFields from './UserInfoFields'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 import { Input, SubscribeCheckbox } from '../common/formElements/FormElements'
+import { Constellations } from '../../../public/Constellations'
 
 const initialFormData = {
   first_name: '',
@@ -132,20 +131,17 @@ const UserInfoForm: React.FC = () => {
           <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} />} />
         </div>
         <div className={styles['c-user-form__banner']}>
+          <Constellations className={styles['c-user-form__banner-constellation']}/>
           <h1>StarPriority</h1>
           <h4>Priority Rebate Form</h4>
-          <Button label='Submit' className={styles['c-user-form__submit-button']} ariaLabel='Submit rebate form' type='submit' disabled={!isValid} />
 
-          <div className={styles['c-user-form__banner--code-row']}>
-            {/* Product Code */}
-            <Input error={errors.product_code} control={control} className={`${styles['c-content-column--input']} w-20`} name='product_code' type='text' label='Product Code:' />
+          <Input error={errors.product_code} control={control} className={`${styles['c-user-form__banner--input']}`} name='product_code' type='text' label='Product Code:' />
+          <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__banner--input']}`} name='redeem_code' type='text' label='Redeem Code:' />
 
-            {/* Redeem Code */}
-            <Input error={errors.redeem_code} control={control} className={`${styles['c-content-column--input']} w-20`} name='redeem_code' type='text' label='Redeem Code:' />
+          <div className={`${styles['c-user-form__banner--action-section']}`}>
+            <SubscribeCheckbox isValid={isValid} error={errors.subscription} control={control} className={`${styles['c-user-form__banner--action-section--checkbox']}`} name='subscription' label='Get our newsletter' />
           </div>
 
-          {/* Subscription Checkbox */}
-          <SubscribeCheckbox error={errors.subscription} control={control} className={`${styles['c-content-column--checkbox']} w-20`} name='subscription' label='Get our newsletter' />
           {/* <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p> */}
         </div>
       </form>

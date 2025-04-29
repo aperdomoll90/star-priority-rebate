@@ -29,6 +29,7 @@ export interface CheckboxInputProps {
   className?: string;
   checked?: boolean;
   error?: FieldError;
+  isValid: boolean;
 }
 
 export interface CheckboxImageProps {
