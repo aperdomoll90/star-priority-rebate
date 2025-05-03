@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 2rem 0.5rem;
-  padding: 3rem 1rem 2rem 3rem;
+  padding: 2rem;
   overflow-y: scroll;
   scrollbar-width: none;
 
@@ -20,13 +20,16 @@
     padding-left: 0.5rem;
 
     &--checkbox-container {
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      flex-direction: row;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 1rem;
     }
+  }
+
+  &--grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   &--checkbox {
@@ -38,7 +41,12 @@
 }
 
 @media (min-width: 700px) {
-  .c-content-column--interests--checkbox-container {
-    gap: 2.3rem;
+  .c-content-column {
+    padding: 3rem 1rem 2rem 3rem;
+
+    &--interests--checkbox-container,
+    &--grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 }

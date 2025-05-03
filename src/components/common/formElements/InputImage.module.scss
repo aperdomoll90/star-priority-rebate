@@ -1,16 +1,18 @@
 .c-input-image {
   aspect-ratio: 1;
   position: relative;
-  border: 2px dashed var(--gray300);
+  border: 2px dashed var(--gray200);
   border-radius: 10px;
   overflow: hidden;
   background: var(--gray100);
-  transition: border-color 0.3s;
-  box-shadow: 0 0 10px 2px var(--blackTransparent200);
+  transition: border-color 0.5s;
 
   &:hover {
-    border-color: var(--gray400);
-    box-shadow: 0 0 10px 2px var(--blackTransparent500);
+    border-color: var(--gray300);
+
+    .c-input-image__button {
+      background-color: var(--blackTransparent500);
+    }
   }
 
   &__label {
@@ -39,22 +41,18 @@
   }
 
   &__button {
-    padding: 2rem;
+    width: 100%;
+    padding: 10%;
     position: absolute;
     bottom: calc(50% - 2rem);
-    left: 0;
-    right: 0;
-    background-color: var(--blackTransparent800);
+    background-color: var(--blueTransparent300);
     color: var(--gray100);
+    font-size: 60%;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
     transition: background-color 0.3s;
-
-    &:hover {
-      background-color: var(--blackTransparent500);
-    }
   }
 
   &__input {

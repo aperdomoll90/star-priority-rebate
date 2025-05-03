@@ -127,23 +127,24 @@ const UserInfoForm: React.FC = () => {
     <>
       {isLoading && <Loader />}
       <form onSubmit={handleSubmit(onSubmit)} className={styles['c-user-form']} encType='multipart/form-data'>
+        <div className={styles['c-user-form__title']}>
+          <Constellations className={styles['c-user-form__title-constellation']} />
+          <h1>StarPriority</h1>
+          <h4>Starbrite Rebate Form</h4>
+        </div>
+
         <div className={`${styles['c-user-form__content-column']}`}>
           <Controller name='first_name' control={control} render={({ field }) => <UserInfoFields control={control} errors={errors} />} />
         </div>
-        <div className={styles['c-user-form__banner']}>
-          <Constellations className={styles['c-user-form__banner-constellation']}/>
-          <h1>StarPriority</h1>
-          <h4>Priority Rebate Form</h4>
 
-          <Input error={errors.product_code} control={control} className={`${styles['c-user-form__banner--input']}`} name='product_code' type='text' label='Product Code:' />
-          <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__banner--input']}`} name='redeem_code' type='text' label='Redeem Code:' />
+        <div className={`${styles['c-user-form__action-section']}`}>
+          <Input error={errors.product_code} control={control} className={`${styles['c-user-form__action-section--input']}`} name='product_code' type='text' label='Product Code:' />
+          <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__action-section--input']}`} name='redeem_code' type='text' label='Redeem Code:' />
 
-          <div className={`${styles['c-user-form__banner--action-section']}`}>
-            <SubscribeCheckbox isValid={isValid} error={errors.subscription} control={control} className={`${styles['c-user-form__banner--action-section--checkbox']}`} name='subscription' label='Get our newsletter' />
-          </div>
-
-          {/* <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p> */}
+          <SubscribeCheckbox isValid={isValid} error={errors.subscription} control={control} className={`${styles['c-user-form__action-section--action-section--checkbox']}`} name='subscription' label='Get our newsletter' />
         </div>
+
+        {/* <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p> */}
       </form>
 
       {isCaptchaVisible && (

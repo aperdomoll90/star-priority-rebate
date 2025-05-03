@@ -25,7 +25,7 @@ export const Input: React.FC<FormInputProps> = ({ name, control, label, type, cl
 
 export const TextArea: React.FC<TextAreaProps> = ({ name, control, label, className = '', required = false, error }) => {
   return (
-    <div className={`${textAreaStyles.textAreaContainer} ${className}`}>
+    <div className={`${textAreaStyles['c-text-area']} ${className}`}>
       <label htmlFor={name}>{label}</label>
       <Controller name={name} control={control} render={({ field }) => <textarea id={name} {...field} required={required}></textarea>} />
       {error && <span className={textAreaStyles.error}>{error.message}</span>}
