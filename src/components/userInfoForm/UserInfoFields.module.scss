@@ -46,6 +46,7 @@
 
     &--interests--checkbox-container,
     &--grid {
+    max-width: 100%;
       grid-template-columns: repeat(3, 1fr);
     }
   }

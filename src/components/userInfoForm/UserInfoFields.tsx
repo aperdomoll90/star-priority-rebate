@@ -61,13 +61,13 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
       <p>Uploads:</p>
       <div className={styles['c-content-column--grid']}>
         {/* Receipt Image */}
-        <InputImage name='receipt_image' className='w-30' control={control} label='Receipt Image' error={errors.receipt_image} />
+        <InputImage name='receipt_image' control={control} label='Receipt Image' error={errors.receipt_image} />
 
         {/* Coupon Image */}
-        <InputImage name='coupon_image' className='w-30' control={control} label='Coupon Image' error={errors.coupon_image} />
+        <InputImage name='coupon_image' control={control} label='Coupon Image' error={errors.coupon_image} />
 
         {/* Barcode Image */}
-        <InputImage name='product_barcode_image' className='w-30' control={control} label='Barcode Image' error={errors.product_barcode_image} />
+        <InputImage name='product_barcode_image' control={control} label='Barcode Image' error={errors.product_barcode_image} />
       </div>
       {/* Comments */}
       <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />

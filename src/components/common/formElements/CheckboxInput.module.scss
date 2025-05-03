@@ -207,9 +207,9 @@
   label {
     position: absolute;
     margin: 2rem;
-    font-size: 70%;
+    font-size:clamp(10%, 20%, 20%);
     text-transform: uppercase;
-    color: var(--gray100);
+    color: var(--blue500);
     transition: all 0.2s ease-in-out;
     opacity: 0;
   }
