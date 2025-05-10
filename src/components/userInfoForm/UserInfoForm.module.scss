@@ -28,10 +28,11 @@
 
     &-constellation {
       opacity: 0.5;
-      max-width: 100%;
+      width: 92%;
       position: absolute;
       z-index: 0;
-      top: 0;
+      top: 5%;
+      left: 5%;
     }
 
     > h1,

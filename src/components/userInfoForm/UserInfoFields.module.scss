@@ -21,14 +21,14 @@
 
     &--checkbox-container {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
   }
 
   &--grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
 
@@ -43,11 +43,5 @@
 @media (min-width: 700px) {
   .c-content-column {
     padding: 3rem 1rem 2rem 3rem;
-
-    &--interests--checkbox-container,
-    &--grid {
-    max-width: 100%;
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 }

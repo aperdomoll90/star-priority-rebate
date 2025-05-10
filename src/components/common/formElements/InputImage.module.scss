@@ -11,7 +11,7 @@
     border-color: var(--gray300);
 
     .c-input-image__button {
-      background-color: var(--blackTransparent500);
+      background: var(--blackTransparent500);
     }
   }
 
@@ -45,7 +45,7 @@
     padding: 10%;
     position: absolute;
     bottom: calc(50% - 2rem);
-    background-color: var(--blueTransparent300);
+    background: var(--blueTransparent300);
     color: var(--gray100);
     font-size: 60%;
     text-align: center;
@@ -65,3 +65,4 @@
     margin-top: 0.25rem;
   }
 }
+
