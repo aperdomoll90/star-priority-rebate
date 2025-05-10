@@ -1,6 +1,10 @@
 :root {
   --whiteTransparent: rgba(255, 255, 255, 0.927);
-  --blackTransparent: rgba(0, 0, 0, 0.782);
+  --blackTransparent900: rgba(0, 0, 0, 0.903);
+  --blackTransparent800: rgba(0, 0, 0, 0.782);
+  --blackTransparent500: rgba(0, 0, 0, 0.522);
+  --blackTransparent200: rgba(0, 0, 0, 0.247);
+  --blueTransparent300: #3498db91; /* Base blue */
   --white100: #ffffff; /* Very light gray (white) */
 
   --gray100: #fbfbfb; /* Very light gray (white) */
@@ -12,6 +16,7 @@
   --gray800: #212121; /* Dark gray */
   --gray900: #0a0a0a; /* Very dark gray (black) */
 
+  --blue000: #cce0f1; /* Light blue */
   --blue100: #85c1f3; /* Light blue */
   --blue200: #5dade2; /* Medium light blue */
   --blue300: #3498db; /* Base blue */
@@ -23,7 +28,7 @@
   --red100: #ffc0cb; /* Pink */
   --red200: #ffb6c1; /* Light Pink */
   --red300: #ff7f50; /* Coral */
-  --red400: #ac7167; /* Tomato Red */
+  --red400: #97665d; /* Tomato Red */
   --red500: #ff6347; /* Tomato Red */
   --red600: #dc143c; /* Crimson */
   --red700: #b22222; /* Firebrick Red */
@@ -43,7 +48,9 @@
   --backgroundDark: var(--gray800);
 
   /* Form */
-  --inputBgColor: var(--whiteTransparent);
+  --inputBgColor: var(--gray200);
+  --inputEdgeColor: var(--gray200);
+  --inputEdgeColorFocus: var(--gray400);
   --primaryButtonColor: var(--blue300);
   --buttonColorHover: var(--blue400);
   --buttonColorActive: var(--blue200);
@@ -75,6 +82,10 @@
   --errorColor: var(--red900); /* Red */
   --successColor: var(--green500); /* Green */
   --warningColor: var(--blue300); /* Blue */
+
+  --sky-gradient: linear-gradient(to bottom, #ffa500 5%, #ffd700 15%, #87ceeb 40%, #4682b4 70%, #000033 100%);
+
+
 }
 
 * {
@@ -90,7 +101,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--backgroundDark);
+  background: var(--gray200);
 }
 
 .page {
@@ -272,6 +283,10 @@ button:disabled:hover {
   flex: 1 1 100%; /* Stack fields on mobile by default */
   min-width: 200px;
 }
+.w-30 {
+  flex: 1 1 100%; /* Stack fields on mobile by default */
+  min-width: 100px;
+}
 
 .w-20 {
   flex: 1 1 100%; /* Stack fields on mobile by default */
@@ -281,6 +296,10 @@ button:disabled:hover {
 /* Mobile-first styles */
 
 @media (min-width: 700px) {
+  .w-100 {
+    flex: 1 1 100%; /* Takes 100% of the row on larger screens */
+    min-width: 200px;
+  }
   .w-50 {
     flex: 1 1 45%; /* Takes 50% of the row on larger screens */
   }
@@ -289,12 +308,11 @@ button:disabled:hover {
     flex: 2 1 40%; /* Takes 40% of the row on larger screens */
   }
 
-  .w-20 {
-    flex: 1 1 20%; /* Takes 20% of the row on larger screens */
+  .w-30 {
+    flex: 1 1 30%; /* Takes 33.33% of the row on larger screens */
   }
 
-  .w-100 {
-    flex: 1 1 100%; /* Takes 100% of the row on larger screens */
-    min-width: 200px;
+  .w-20 {
+    flex: 1 1 20%; /* Takes 20% of the row on larger screens */
   }
 }

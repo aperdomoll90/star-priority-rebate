@@ -29,6 +29,7 @@ export interface CheckboxInputProps {
   className?: string;
   checked?: boolean;
   error?: FieldError;
+  isValid: boolean;
 }
 
 export interface CheckboxImageProps {
@@ -46,9 +47,6 @@ export interface InputImageProps {
   label: string;
   className?: string;
   error?: any;
-  accept?: string;
-  maxWidth?: string;
-  maxHeight?: string;
 }
 
 

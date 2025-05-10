@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { IInterestTypes } from '../../utils/userRebateInfoTypes'
-import styles from './UserInfoForm.module.scss'
-import { Checkbox, CheckboxImage, Input, InputImage, TextArea } from '../common/formElements/FormElements'
+import styles from './UserInfoFields.module.scss'
+import { CheckboxImage, Input, InputImage, SubscribeCheckbox, TextArea } from '../common/formElements/FormElements'
 import { Controller } from 'react-hook-form'
 import { userInfoSchema, UserInfoSchemaType } from './userInfoSchema'
 
@@ -12,14 +12,13 @@ interface UserInfoFieldsProps {
 }
 
 const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
-
   const isFieldRequired = (fieldName: keyof UserInfoSchemaType) => {
     const fieldSchema = userInfoSchema.shape[fieldName]
     return !fieldSchema.isOptional()
   }
 
   return (
-    <div className={styles['c-user-form__input-container']}>
+    <div className={styles['c-content-column']}>
       <Input className='w-50' control={control} name='first_name' type='text' label='First Name:' error={errors.first_name} required={isFieldRequired('first_name')} />
       <Input className='w-50' control={control} name='last_name' type='text' label='Last Name:' error={errors.last_name} required={isFieldRequired('last_name')} />
       <Input className='w-50' control={control} name='email' type='email' label='Email:' error={errors.email} required={isFieldRequired('email')} />
@@ -34,9 +33,9 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
       <Input className='w-20' control={control} name='store_city' type='text' label='Store City:' error={errors.store_city} required={isFieldRequired('store_city')} />
 
       {/* Interests */}
-      <div className={styles['c-user-form__input-container--interests']}>
+      <div className={styles['c-content-column--interests']}>
         <p>Interests:</p>
-        <div className={styles['c-user-form__input-container--interests--checkbox-container']}>
+        <div className={styles['c-content-column--interests--checkbox-container']}>
           {Object.values(IInterestTypes).map(interest => (
             <Controller
               key={interest}
@@ -59,26 +58,19 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
         </div>
       </div>
 
-      {/* Receipt Image */}
-      <InputImage name='receipt_image' control={control} label='Receipt Image:' error={errors.receipt_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
+      <p>Uploads:</p>
+      <div className={styles['c-content-column--grid']}>
+        {/* Receipt Image */}
+        <InputImage name='receipt_image' control={control} label='Receipt Image' error={errors.receipt_image} />
 
-      {/* Coupon Image */}
-      <InputImage name='coupon_image' control={control} label='Coupon Image:' error={errors.coupon_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
+        {/* Coupon Image */}
+        <InputImage name='coupon_image' control={control} label='Coupon Image' error={errors.coupon_image} />
 
-      {/* Barcode Image */}
-      <InputImage name='product_barcode_image' control={control} label='Barcode Image:' error={errors.product_barcode_image} accept='image/*' maxWidth='200px' maxHeight='200px' />
-
+        {/* Barcode Image */}
+        <InputImage name='product_barcode_image' control={control} label='Barcode Image' error={errors.product_barcode_image} />
+      </div>
       {/* Comments */}
       <TextArea control={control} name='comments1' label='Comments:' error={errors.comments1} />
-
-      {/* Product Code */}
-      <Input error={errors.product_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='product_code' type='text' label='Product Code:' />
-
-      {/* Redeem Code */}
-      <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__input-container--input']} w-50`} name='redeem_code' type='text' label='Redeem Code:' />
-
-      {/* Subscription Checkbox */}
-      <Checkbox error={errors.subscription} control={control} className={`${styles['c-user-form__input-container--checkbox']} w-100`} name='subscription' label='Subscribe to newsletter' />
     </div>
   )
 }

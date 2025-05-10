@@ -1,8 +1,10 @@
 .checkbox-container {
   display: flex;
+  align-self: flex-end;
+  padding-bottom: 0.5rem;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: center !important;
   gap: 0.5rem;
 
   label {
@@ -11,6 +13,156 @@
     white-space: nowrap;
     width: auto;
     gap: 0.5rem;
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+.c-subscribe-checkbox-container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 9rem;
+
+  &__content {
+    position: absolute;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center !important;
+    gap: 0.5rem;
+
+    label {
+      width: auto;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: .9px;
+      gap: 0.5rem;
+      color: var(--gray100);
+    }
+    input {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--inputEdgeColor);
+      border-radius: 4px;
+      background-color: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      :hover {
+        border-color: var(--gray400);
+      }
+
+      &:checked {
+        border-color: var(--gray300);
+
+        &::before {
+          content: '✔';
+          display: block;
+          text-align: center;
+          color: var(--gray200);
+        }
+      }
+    }
+  }
+
+  &-button {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.5rem 1.9rem;
+    background-color: transparent;
+    outline: 2px solid var(--gray100);
+
+    &:hover {
+      outline: 2px solid var(--gray100);
+    }
+
+    &:disabled {
+      background-color: var(--gray200);
+      outline: none;
+      color: var(--blue300);
+      &:hover {
+        background-color: var(--gray300);
+      }
+    }
+  }
+}
+
+.c-subscribe-svg {
+
+  &[data-active='true'] {
+    .c-subscribe-svg {
+
+      &__envelope path {
+        transform: translateX(12rem) translateY(-1rem) scale(1.5);
+      }
+      &__bottom-right-line path {
+        transform: translateX(-20rem) translateY(1rem);
+      }
+
+      &__right-line path {
+        transform: translateX(-20rem);
+      }
+
+      &__left-line path {
+        transform: translateX(-7rem);
+      }
+
+      &__bottom-left-line path {
+        transform: translateX(-6rem) translateY(1rem);
+      }
+    }
+  }
+
+  /* Default styles for SVG elements */
+  &__envelope path {
+    fill: none;
+    stroke: var(--gray100);
+    stroke-width: 7;
+    transition: all 0.4s ease-in-out;
+    transition-delay: 0.2s;
+    transform: translateY(2rem);
+  }
+
+  &__left-line path {
+    stroke: var(--gray100);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+
+  &__bottom-left-line path {
+    stroke: var(--gray100);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+
+  &__right-line path {
+    stroke: var(--gray100);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+    transition-delay: 0.2s;
+  }
+
+  &__bottom-right-line path {
+    stroke: var(--gray100);
+    stroke-width: 2;
+    transition: all 0.4s ease-in-out;
+  }
+}
+
+@media (min-width: 700px) {
+  .c-subscribe-svg {
+    transform: translateY(0);
   }
 }
 
@@ -22,8 +174,8 @@
 }
 
 .checkbox-image-container {
-  width: calc(100% / 2.2);
   aspect-ratio: 1;
+  width: 100%; 
   border-radius: 8px;
   position: relative;
   display: flex;
@@ -32,6 +184,7 @@
   cursor: pointer;
   user-select: none;
   overflow: hidden;
+  border: 2px dashed var(--gray200);
 
   img {
     width: 100%;
@@ -46,7 +199,7 @@
     filter: blur(5px) hue-rotate(180deg) brightness(50%);
   }
 
-  .checked {
+  &[data-checked='true'] img {
     outline: 3px solid var(--blue500);
     outline-offset: -1rem;
   }
@@ -54,9 +207,9 @@
   label {
     position: absolute;
     margin: 2rem;
-    font-size: 1rem;
+    font-size:clamp(10%, 20%, 20%);
     text-transform: uppercase;
-    color: var(--gray100);
+    color: var(--blue500);
     transition: all 0.2s ease-in-out;
     opacity: 0;
   }
@@ -65,12 +218,5 @@
     transition-delay: 0.2s;
     opacity: 1;
     transform: scale(1.1);
-  }
-}
-
-
-@media (min-width: 700px) {
-  .checkbox-image-container {
-    width: calc(100% / 3.2);
   }
 }
