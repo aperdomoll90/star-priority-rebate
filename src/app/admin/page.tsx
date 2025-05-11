@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation' // Import useRouter
+import { useRouter } from 'next/navigation' 
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -14,8 +15,8 @@ import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
 
 // Define the schema for form validation
 const loginSchema = z.object({
-  username: z.string().optional(),
-  password: z.string().optional(),
+  username: z.string().min(1, 'Username is required'),
+  password: z.string().min(1, 'Password is required'),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -40,11 +41,16 @@ export default function AdminPage() {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
 
-    if (!data.username || !data.password) {
-      setIsCaptchaVisible(true)
-      setIsLoading(false)
+    const res = await signIn('credentials', {
+      redirect: false,
+      username: data.username,
+      password: data.password,
+    })
+  
+    if (res?.ok) {
+      setIsCaptchaVisible(true) 
+      setIsLoading(false) 
     } else {
-      // If username and password are provided, show an error
       setModalMessage('Invalid credentials, please try again.')
       setIsModalOpen(true)
       setIsLoading(false)
