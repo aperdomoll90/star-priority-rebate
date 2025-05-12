@@ -1,6 +1,41 @@
 .button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 4px;
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
-  border-radius: 4px;
+  letter-spacing: 3px;
+  color: var(--buttonFontColor);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
   transition: all .5s ease;
+  background-color: var(--blue300);
+  transition: background-color 0.3s ease;
+
+  svg {
+    height: 1rem;
+  }
+
+  &:hover {
+    background-color: var(--buttonColorHover);
+    border: none;
+    outline: none;
+  }
+  
+  &:active {
+    background-color: var(--buttonColorActive);
+    outline: none;
+  }
+  
+  &:disabled {
+    background-color: var(--gray300);
+    cursor: not-allowed;
+  }
+  
+  &:disabled:hover {
+    background-color: var(--gray300);
+  }
 }
