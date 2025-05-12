@@ -6,6 +6,8 @@ import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { generateCSV, downloadCSV } from '@/utils/csvHandler'
 import Loader from '../../components/common/loader/loader'
 import Image from 'next/image'
+import { Constellations } from '../../../public/Constellations'
+import { DownloadSVG } from '../../../public/DownloadSVG'
 
 export default function AdminPortalClient() {
   const [rebates, setRebates] = useState<IUserRebateInfoProps[]>([])
@@ -72,37 +74,48 @@ export default function AdminPortalClient() {
     setSeeAll(false)
   }
 
+
   return (
     <>
       {isLoading && <Loader />}
-      <div className={styles.adminContainer}>
-        <h1>Admin Portal</h1>
-        <div className={styles.filterOptions}>
-          <label>
-            <input type='checkbox' checked={seeAll} onChange={handleSeeAllChange} />
-            See All
-          </label>
-          <label>
-            <input type='checkbox' checked={seeNewRebates} onChange={handleSeeNewRebatesChange} />
-            See New Rebates
-          </label>
+      <div className={styles['c-admin-portal']}>
+        <div className={styles['c-admin-portal__banner']}>
+          <Constellations className={styles['c-admin-portal__banner--constellation']} />
+          <div className={styles['c-admin-portal__banner--title']}>
+            <h1>StarPriority</h1>
+            <h4>Rebate Admin Portal</h4>
+          </div>
+          <div className={styles['c-admin-portal__banner--toggle']}>
+            <label>
+              <input type='checkbox' checked={seeAll} onChange={handleSeeAllChange} />
+              See All
+            </label>
+            <label>
+              <input type='checkbox' checked={seeNewRebates} onChange={handleSeeNewRebatesChange} />
+              See New Rebates
+            </label>
+          </div>
         </div>
-        <div className={styles.rebateList} style={{ justifyContent: rebates.length === 0 ? 'center' : 'flex-start', alignItems: rebates.length === 0 ? 'center' : 'flex-start' }}>
-          {rebates.length > 0 ? (
-            rebates.map(rebate => (
-              <div key={rebate.user_id} className={styles.rebateItem}>
-                <span>
-                  {rebate.first_name} {rebate.last_name}
-                </span>
-                <span>ID: {rebate.user_id}</span>
-                <Image src={rebate.receipt_image as string} alt='Receipt Image' width={200} height={200} className={styles.image} />
-              </div>
-            ))
-          ) : (
-            <div>No rebates to display</div>
-          )}
+
+        <div className={styles['c-admin-portal__content']}>
+          <div className={styles['c-admin-portal__content--list']}>
+            {rebates.length > 0 ? (
+              rebates.map(rebate => (
+                <div key={rebate.user_id} className={styles['c-admin-portal__content--list--item']}>
+                  <span>
+                    {rebate.first_name} {rebate.last_name}
+                  </span>
+                  <span>ID: {rebate.user_id}</span>
+                  <Image src={rebate.receipt_image as string} alt='Receipt Image' width={200} height={200} className={styles['c-admin-portal__content--list--item-image']} />
+                </div>
+              ))
+            ) : (
+              <div>No rebates to display</div>
+            )}
+          </div>
+
+          <Button iconPrev={<DownloadSVG />} label='Download' onClick={handleDownload} className={styles['c-admin-portal__content--download']} ariaLabel='Download rebates' disabled={rebates.length === 0} />
         </div>
-        <Button label='Download' onClick={handleDownload} className={styles.downloadButton} ariaLabel='Download rebates' disabled={rebates.length === 0} />
       </div>
     </>
   )

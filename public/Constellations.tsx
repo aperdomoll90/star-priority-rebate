@@ -22,12 +22,12 @@ export const Constellations = ({ className }: { className: string }) => {
       <circle cx='194.5' cy='178.5' r='2.5' fill='#D9D9D9' />
       <circle cx='118.5' cy='124.5' r='2.5' fill='#D9D9D9' />
       <circle cx='55.5' cy='54.5' r='2.5' fill='#D9D9D9' />
-      <path d='M242.5 128L292 155.5' stroke='#DFDFDF' stroke-linecap='round' />
-      <path d='M268.5 88.5L318 113' stroke='#DFDFDF' stroke-linecap='round' />
-      <path d='M195 11L231.5 33.5' stroke='#DFDFDF' stroke-linecap='round' />
-      <path d='M255.763 91.6786L238.998 117.5M243 45L258 77.5' stroke='#DFDFDF' stroke-linecap='round' />
-      <path d='M322 122.5L304.5 152' stroke='#DFDFDF' stroke-linecap='round' />
-      <path d='M449.5 73.5L540 60M436.5 82L395 144.5' stroke='#DFDFDF' stroke-linecap='round' />
+      <path d='M242.5 128L292 155.5' stroke='#DFDFDF' strokeLinecap='round' />
+      <path d='M268.5 88.5L318 113' stroke='#DFDFDF' strokeLinecap='round' />
+      <path d='M195 11L231.5 33.5' stroke='#DFDFDF' strokeLinecap='round' />
+      <path d='M255.763 91.6786L238.998 117.5M243 45L258 77.5' stroke='#DFDFDF' strokeLinecap='round' />
+      <path d='M322 122.5L304.5 152' stroke='#DFDFDF' strokeLinecap='round' />
+      <path d='M449.5 73.5L540 60M436.5 82L395 144.5' stroke='#DFDFDF' strokeLinecap='round' />
     </svg>
   )
 }

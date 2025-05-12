@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { IInterestTypes, IUserRebateInfoProps } from '../../utils/userRebateInfoTypes'
 import Modal from '../common/modal/modal'
 import Button from '../common/button/button'
@@ -57,6 +58,8 @@ const UserInfoForm: React.FC = () => {
   const [isCaptchaVerified, setIsCaptchaVerified] = useState<boolean>(false)
   const [isCaptchaVisible, setIsCaptchaVisible] = useState<boolean>(false)
   const [isVerifyingCaptcha, setIsVerifyingCaptcha] = useState<boolean>(false)
+
+  const router = useRouter()
 
   const onSubmit = async (data: UserInfoSchemaType) => {
     setIsLoading(true)
@@ -123,6 +126,11 @@ const UserInfoForm: React.FC = () => {
     setIsLoading(false)
   }
 
+  const handleSuccessModalClose = () => {
+    setIsModalOpen(false)
+    reset()
+  }
+
   return (
     <>
       {isLoading && <Loader />}
@@ -152,7 +160,7 @@ const UserInfoForm: React.FC = () => {
           <ReCaptchaVerifier onSuccess={handleCaptchaSuccess} onFailure={handleCaptchaFailure} isVerifying={isVerifyingCaptcha} setIsVerifying={setIsVerifyingCaptcha} />
         </div>
       )}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={handleSuccessModalClose}>
         {error ? (
           <>
             <h3 className={modalStyles.error_header}>Sorry!!</h3>
