@@ -101,11 +101,11 @@ export default function AdminPortalClient() {
           <div className={styles['c-admin-portal__content--list']}>
             {rebates.length > 0 ? (
               rebates.map(rebate => (
-                <div key={rebate.user_id} className={styles['c-admin-portal__content--list--item']}>
+                <div key={rebate.redeem_code} className={styles['c-admin-portal__content--list--item']}>
                   <span>
                     {rebate.first_name} {rebate.last_name}
                   </span>
-                  <span>ID: {rebate.user_id}</span>
+                  <span>ID: {rebate.redeem_code}</span>
                   <Image src={rebate.receipt_image as string} alt='Receipt Image' width={200} height={200} className={styles['c-admin-portal__content--list--item-image']} />
                 </div>
               ))

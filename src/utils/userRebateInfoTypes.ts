@@ -11,7 +11,6 @@ export enum IInterestTypes {
 }
 
 export interface IUserRebateInfoProps {
-  user_id?: string
   first_name?: string
   last_name?: string
   address?: string
@@ -27,8 +26,8 @@ export interface IUserRebateInfoProps {
   comments1?: string
   interests?: IInterestTypes[]
   subscription?: boolean
-  product_code?: string
-  redeem_code?: string
+  product_code?: string // this is the product/Rebate/Promotion id code in the coupon
+  redeem_code?: string // this is the user ID we assign
   receipt_image?: File | string
   coupon_image?: File | string
   product_barcode_image?: File | string

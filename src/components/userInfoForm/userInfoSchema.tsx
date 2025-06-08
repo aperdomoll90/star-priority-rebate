@@ -17,7 +17,6 @@ export const userInfoSchema = z.object({
   interests: z.array(z.nativeEnum(IInterestTypes)).optional(),
   comments1: z.string().optional(),
   product_code: z.string().min(1, "Product code is required"),
-  redeem_code: z.string().min(1, "Redeem code is required"),
   subscription: z.boolean(),
   receipt_image: z.instanceof(File),
   coupon_image: z.instanceof(File),
