@@ -53,9 +53,6 @@ export const createValidationRules = (fields: string[]) => {
       case 'product_code':
         rules.product_code = (value: string) => (value ? null : 'Product code is required');
         break;
-      case 'redeem_code':
-        rules.redeem_code = (value: string) => (value ? null : 'Redeem code is required');
-        break;
     }
   });
 

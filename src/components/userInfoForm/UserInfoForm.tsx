@@ -32,7 +32,6 @@ const initialFormData = {
   interests: [],
   subscription: false,
   product_code: '',
-  redeem_code: '',
   receipt_image: undefined,
   coupon_image: undefined,
   product_barcode_image: undefined,
@@ -146,10 +145,23 @@ const UserInfoForm: React.FC = () => {
         </div>
 
         <div className={`${styles['c-user-form__action-section']}`}>
-          <Input error={errors.product_code} control={control} className={`${styles['c-user-form__action-section--input']}`} name='product_code' type='text' label='Product Code:' />
-          <Input error={errors.redeem_code} control={control} className={`${styles['c-user-form__action-section--input']}`} name='redeem_code' type='text' label='Redeem Code:' />
+          <Input
+            error={errors.product_code}
+            control={control}
+            className={`${styles['c-user-form__action-section--input']}`}
+            name='product_code'
+            type='text'
+            label='Product Code:'
+          />
 
-          <SubscribeCheckbox isValid={isValid} error={errors.subscription} control={control} className={`${styles['c-user-form__action-section--action-section--checkbox']}`} name='subscription' label='Get our newsletter' />
+          <SubscribeCheckbox
+            isValid={isValid}
+            error={errors.subscription}
+            control={control}
+            className={`${styles['c-user-form__action-section--action-section--checkbox']}`}
+            name='subscription'
+            label='Get our newsletter'
+          />
         </div>
 
         {/* <p>Complete the form to get your a reusable Star brite Priority Rebate ID. Keep your code handy for future rebates!</p> */}
@@ -157,7 +169,12 @@ const UserInfoForm: React.FC = () => {
 
       {isCaptchaVisible && (
         <div className={styles['recaptcha-wrapper']}>
-          <ReCaptchaVerifier onSuccess={handleCaptchaSuccess} onFailure={handleCaptchaFailure} isVerifying={isVerifyingCaptcha} setIsVerifying={setIsVerifyingCaptcha} />
+          <ReCaptchaVerifier
+            onSuccess={handleCaptchaSuccess}
+            onFailure={handleCaptchaFailure}
+            isVerifying={isVerifyingCaptcha}
+            setIsVerifying={setIsVerifyingCaptcha}
+          />
         </div>
       )}
       <Modal isOpen={isModalOpen} onClose={handleSuccessModalClose}>

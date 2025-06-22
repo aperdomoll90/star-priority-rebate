@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body>
-        <div className='page'>{children}</div>
+        <div id='page'>{children}</div>
       </body>
     </html>
   )

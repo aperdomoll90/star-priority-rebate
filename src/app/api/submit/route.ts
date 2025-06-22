@@ -2,6 +2,13 @@ import connectToMongodb from '@/utils/mongoConnect'
 import { IInterestTypes, IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { NextRequest, NextResponse } from 'next/server'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+  addProfileToKlaviyoList,
+  checkIfKlaviyoProfileExists,
+  createKlaviyoProfile,
+  sendMailjetConfirmation,
+  syncKlaviyoProfileIfChanged,
+} from './utils'
 
 export const config = {
   api: {
@@ -21,21 +28,20 @@ const s3 = new S3Client({
   },
 })
 
-async function uploadFileToS3(file: File, userId: string, label:string): Promise<string> {
-  const uniqueFileName = `${userId}-${label}`;
+async function uploadFileToS3(file: File, userId: string, label: string): Promise<string> {
+  const uniqueFileName = `${userId}-${label}`
 
-  const fileBuffer = await file.arrayBuffer();
+  const fileBuffer = await file.arrayBuffer()
   const command = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: uniqueFileName,
     Body: Buffer.from(fileBuffer),
     ContentType: file.type,
-  });
+  })
 
-  await s3.send(command);
-  return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${uniqueFileName}`;
+  await s3.send(command)
+  return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.amazonaws.com/${uniqueFileName}`
 }
-
 
 async function generateUniqueId(db: any) {
   let uniqueId = ''
@@ -48,6 +54,93 @@ async function generateUniqueId(db: any) {
   }
 
   return uniqueId
+}
+
+async function sendUserConfirmationEmail({
+  email,
+  first_name,
+  last_name,
+  city,
+  state,
+  zip,
+  country,
+  subscription,
+  product_code,
+  redeem_code,
+}: {
+  email: string
+  first_name: string
+  last_name: string
+  city: string
+  state: string
+  zip: string
+  country: string
+  subscription?: boolean
+  product_code: string
+  redeem_code: string
+}) {
+  try {
+    let profileId: string | undefined = undefined
+
+    if (subscription) {
+      const { exists, profileId: existingProfileId, profileData } = await checkIfKlaviyoProfileExists(email)
+      const expectedProps = { city, state, zip, country }
+      
+      if (exists) {
+        await syncKlaviyoProfileIfChanged({
+          profileId: existingProfileId as string,
+          profileData,
+          email,
+          first_name,
+          last_name,
+          properties: expectedProps,
+        })
+        profileId = existingProfileId
+        console.info('👤 Klaviyo profile already exists:', profileId)
+      } else {
+        const { success, profileId: newProfileId } = await createKlaviyoProfile({
+          email,
+          first_name,
+          last_name,
+          properties: {
+            city,
+            state,
+            zip,
+            country,
+          },
+        })
+
+        if (!success || !newProfileId) {
+          throw new Error('Failed to create Klaviyo profile')
+        }
+
+        profileId = newProfileId
+        console.info('🆕 Created new Klaviyo profile:', profileId)
+      }
+
+      if (profileId) {
+        const added = await addProfileToKlaviyoList(profileId)
+        if (added) {
+          console.log('✅ Profile added to Klaviyo list')
+        } else {
+          console.error('⚠️ Failed to add profile to Klaviyo list')
+          throw new Error('Failed  to add profile to Klaviyo list')
+        }
+      }
+    }
+
+    await sendMailjetConfirmation({
+      to: email,
+      firstName: first_name,
+      userCode: redeem_code,
+      productCode: product_code,
+    })
+
+    console.log('📩 Confirmation event sent for profile:', email)
+  } catch (error) {
+    console.error('❌ Error sending confirmation email:', error)
+    throw new Error('Failed to send confirmation email')
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -71,21 +164,20 @@ export async function POST(req: NextRequest) {
     let barcodeImageUrl = ''
 
     if (receiptImage) {
-      receiptImageUrl = await uploadFileToS3(receiptImage, uniqueId, "receiptimage" )
+      receiptImageUrl = await uploadFileToS3(receiptImage, uniqueId, 'receiptimage')
     }
 
     if (couponImage) {
-      couponImageUrl = await uploadFileToS3(couponImage, uniqueId, "couponimage")
+      couponImageUrl = await uploadFileToS3(couponImage, uniqueId, 'couponimage')
     }
 
     if (barcodeImage) {
-      barcodeImageUrl = await uploadFileToS3(barcodeImage, uniqueId, "barcodeimage")
+      barcodeImageUrl = await uploadFileToS3(barcodeImage, uniqueId, 'barcodeimage')
     }
 
     const interests = formData.getAll('interests') as string[]
 
     const formDataObject: Partial<IUserRebateInfoProps> = {
-      user_id: uniqueId,
       date_added: dateAdded,
       first_name: formData.get('first_name') as string,
       last_name: formData.get('last_name') as string,
@@ -103,7 +195,7 @@ export async function POST(req: NextRequest) {
       interests: interests as IInterestTypes[],
       subscription: formData.get('subscription') === 'true',
       product_code: formData.get('product_code') as string,
-      redeem_code: formData.get('redeem_code') as string,
+      redeem_code: uniqueId, // This is the unique user ID we assign
       exported: false,
       receipt_image: receiptImageUrl,
       coupon_image: couponImageUrl,
@@ -112,7 +204,20 @@ export async function POST(req: NextRequest) {
 
     await db.collection('rebate_transactions').insertOne(formDataObject as IUserRebateInfoProps)
 
-    return NextResponse.json({ confirmationNumber: uniqueId }, { status: 201 })
+    await sendUserConfirmationEmail({
+      email: formDataObject.email!,
+      first_name: formDataObject.first_name!,
+      last_name: formDataObject.last_name!,
+      city: formDataObject.city!,
+      state: formDataObject.state!,
+      zip: formDataObject.zip!,
+      country: formDataObject.country!,
+      subscription: formDataObject.subscription!,
+      product_code: formDataObject.product_code!,
+      redeem_code: formDataObject.redeem_code!,
+    })
+
+    return NextResponse.json({ confirmationNumber: formDataObject.redeem_code! }, { status: 201 })
   } catch (error) {
     console.error('Error processing form submission:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
