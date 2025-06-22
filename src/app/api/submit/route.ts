@@ -85,8 +85,6 @@ async function sendUserConfirmationEmail({
     if (subscription) {
       const { exists, profileId: existingProfileId, profileData } = await checkIfKlaviyoProfileExists(email)
       const expectedProps = { city, state, zip, country }
-
-      console.log('profileData', profileData)
       
       if (exists) {
         await syncKlaviyoProfileIfChanged({
