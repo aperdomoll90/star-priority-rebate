@@ -1,56 +1,54 @@
 import mailjet from 'node-mailjet'
 
 export type KlaviyoProfileData = {
-  type: 'profile';
-  id: string;
+  type: 'profile'
+  id: string
   attributes: {
-    email: string;
-    phone_number: string | null;
-    external_id: string | null;
-    anonymous_id: string | null;
-    first_name: string;
-    last_name: string;
-    organization: string | null;
-    locale: string | null;
-    title: string | null;
-    image: string | null;
-    created: string;
-    updated: string;
-    last_event_date: string | null;
+    email: string
+    phone_number: string | null
+    external_id: string | null
+    anonymous_id: string | null
+    first_name: string
+    last_name: string
+    organization: string | null
+    locale: string | null
+    title: string | null
+    image: string | null
+    created: string
+    updated: string
+    last_event_date: string | null
     location: {
-      country: string | null;
-      address1: string | null;
-      region: string | null;
-      zip: string | null;
-      city: string | null;
-      longitude: number | null;
-      latitude: number | null;
-      address2: string | null;
-      timezone: string | null;
-      ip: string | null;
-    };
+      country: string | null
+      address1: string | null
+      region: string | null
+      zip: string | null
+      city: string | null
+      longitude: number | null
+      latitude: number | null
+      address2: string | null
+      timezone: string | null
+      ip: string | null
+    }
     properties?: {
-      city?: string;
-      state?: string;
-      zip?: string;
-      country?: string;
-      [key: string]: any;
-    };
-  };
+      city?: string
+      state?: string
+      zip?: string
+      country?: string
+      [key: string]: any
+    }
+  }
   relationships: {
-    lists: { links: Record<string, string> };
-    segments: { links: Record<string, string> };
-    'push-tokens': { links: Record<string, string> };
-    conversation: { links: Record<string, string> };
-  };
+    lists: { links: Record<string, string> }
+    segments: { links: Record<string, string> }
+    'push-tokens': { links: Record<string, string> }
+    conversation: { links: Record<string, string> }
+  }
   links: {
-    self: string;
-  };
-};
+    self: string
+  }
+}
 
-
-
-const mailjetClient = mailjet.apiConnect(process.env.MJ_APIKEY_PUBLIC!, process.env.MJ_APIKEY_PRIVATE!)
+const mailjetClient = mailjet.apiConnect(process.env.MAILJET_APIKEY_PUBLIC!, process.env.MAILJET_APIKEY_PRIVATE!)
 
 export async function sendMailjetConfirmation({
   to,
