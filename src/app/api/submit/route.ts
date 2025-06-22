@@ -2,6 +2,13 @@ import connectToMongodb from '@/utils/mongoConnect'
 import { IInterestTypes, IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { NextRequest, NextResponse } from 'next/server'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import {
+  addProfileToKlaviyoList,
+  checkIfKlaviyoProfileExists,
+  createKlaviyoProfile,
+  sendMailjetConfirmation,
+  syncKlaviyoProfileIfChanged,
+} from './utils'
 
 export const config = {
   api: {
@@ -73,83 +80,68 @@ async function sendUserConfirmationEmail({
   redeem_code: string
 }) {
   try {
-    const profilePayload = {
-      data: {
-        type: 'profile',
-        attributes: {
+    let profileId: string | undefined = undefined
+
+    if (subscription) {
+      const { exists, profileId: existingProfileId, profileData } = await checkIfKlaviyoProfileExists(email)
+      const expectedProps = { city, state, zip, country }
+
+      console.log('profileData', profileData)
+      
+      if (exists) {
+        await syncKlaviyoProfileIfChanged({
+          profileId: existingProfileId as string,
+          profileData,
+          email,
+          first_name,
+          last_name,
+          properties: expectedProps,
+        })
+        profileId = existingProfileId
+        console.info('👤 Klaviyo profile already exists:', profileId)
+      } else {
+        const { success, profileId: newProfileId } = await createKlaviyoProfile({
           email,
           first_name,
           last_name,
           properties: {
-            city: city,
-            state: state,
-            zipcode: zip,
-            country: country,
-            subscription: subscription,
-            product_code: product_code,
-            user_code: redeem_code,
+            city,
+            state,
+            zip,
+            country,
           },
-        },
-      },
+        })
+
+        if (!success || !newProfileId) {
+          throw new Error('Failed to create Klaviyo profile')
+        }
+
+        profileId = newProfileId
+        console.info('🆕 Created new Klaviyo profile:', profileId)
+      }
+
+      if (profileId) {
+        const added = await addProfileToKlaviyoList(profileId)
+        if (added) {
+          console.log('✅ Profile added to Klaviyo list')
+        } else {
+          console.error('⚠️ Failed to add profile to Klaviyo list')
+          throw new Error('Failed  to add profile to Klaviyo list')
+        }
+      }
     }
 
-    const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
-      method: 'POST',
-      headers: {
-        Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_KEY}`,
-        'Content-Type': 'application/json',
-        revision: '2023-02-22',
-      },
-      body: JSON.stringify(profilePayload),
+    await sendMailjetConfirmation({
+      to: email,
+      firstName: first_name,
+      userCode: redeem_code,
+      productCode: product_code,
     })
 
-    const profileResult = await profileRes.json()
-    if (!profileRes.ok) {
-      console.error('❌ Failed to create profile:', profileResult)
-      return
-    }
-
-    const profileId = profileResult.data?.id
-    if (!profileId) {
-      console.error('❌ No profile ID returned by Klaviyo')
-      return
-    }
-
-    console.log('🆔 Subscribing profile to list:', profileId)
-
-    const listRes = await fetch(`https://a.klaviyo.com/api/lists/${process.env.KLAVIYO_LIST_ID}/relationships/profiles/`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_KEY}`,
-        'Content-Type': 'application/json',
-        revision: '2023-02-22',
-      },
-      body: JSON.stringify({
-        data: [
-          {
-            type: 'profile',
-            id: profileId,
-          },
-        ],
-      }),
-    })
-
-    // Safe JSON parsing for list response
-    let listResult: any = null
-    try {
-      const text = await listRes.text()
-      listResult = text ? JSON.parse(text) : null
-    } catch (err) {
-      console.error('❌ Failed to parse list response as JSON:', err)
-    }
-
-    if (!listRes.ok) {
-      console.error(`❌ Failed to subscribe profile ${profileId} to list:`, listResult || 'No response body')
-    } else {
-      console.log('✅ Klaviyo profile added to list successfully!')
-    }
-  } catch (err) {
-    console.error('❌ Exception during Klaviyo call:', err)
+    console.log('📩 Confirmation event sent for profile:', email)
+  } catch (error) {
+    console.error('❌ Error sending confirmation email:', error)
+    throw new Error('Failed to send confirmation email')
   }
 }
 

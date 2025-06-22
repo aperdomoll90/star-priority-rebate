@@ -33,7 +33,7 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
       <Input className='w-20' control={control} name='store_city' type='text' label='Store City:' error={errors.store_city} required={isFieldRequired('store_city')} />
 
       {/* Interests */}
-      <div className={styles['c-content-column--interests']}>
+      {/* <div className={styles['c-content-column--interests']}>
         <p>Interests:</p>
         <div className={styles['c-content-column--interests--checkbox-container']}>
           {Object.values(IInterestTypes).map(interest => (
@@ -56,9 +56,8 @@ const UserInfoFields: React.FC<UserInfoFieldsProps> = ({ control, errors }) => {
             />
           ))}
         </div>
-      </div>
+      </div> */}
 
-      <p>Uploads:</p>
       <div className={styles['c-content-column--grid']}>
         {/* Receipt Image */}
         <InputImage name='receipt_image' control={control} label='Receipt Image' error={errors.receipt_image} />
