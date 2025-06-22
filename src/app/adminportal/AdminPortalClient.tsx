@@ -55,7 +55,15 @@ export default function AdminPortalClient() {
       if (rebates.length > 0) {
         const csvContent = generateCSV(rebates)
         downloadCSV(csvContent, 'rebates.csv')
-        await updateExportedStatus(rebates)
+
+        if (seeNewRebates) {
+          await fetch('/api/send-rebate-emails', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rebates }),
+          })
+          await updateExportedStatus(rebates)
+        }
       }
     } catch (error) {
       console.error('Error during download process:', error)
@@ -73,7 +81,6 @@ export default function AdminPortalClient() {
     setSeeNewRebates(!seeNewRebates)
     setSeeAll(false)
   }
-
 
   return (
     <>
@@ -106,7 +113,13 @@ export default function AdminPortalClient() {
                     {rebate.first_name} {rebate.last_name}
                   </span>
                   <span>ID: {rebate.redeem_code}</span>
-                  <Image src={rebate.receipt_image as string} alt='Receipt Image' width={200} height={200} className={styles['c-admin-portal__content--list--item-image']} />
+                  <Image
+                    src={rebate.receipt_image as string}
+                    alt='Receipt Image'
+                    width={200}
+                    height={200}
+                    className={styles['c-admin-portal__content--list--item-image']}
+                  />
                 </div>
               ))
             ) : (
@@ -114,7 +127,14 @@ export default function AdminPortalClient() {
             )}
           </div>
 
-          <Button iconPrev={<DownloadSVG />} label='Download' onClick={handleDownload} className={styles['c-admin-portal__content--download']} ariaLabel='Download rebates' disabled={rebates.length === 0} />
+          <Button
+            iconPrev={<DownloadSVG />}
+            label='Download'
+            onClick={handleDownload}
+            className={styles['c-admin-portal__content--download']}
+            ariaLabel='Download rebates'
+            disabled={rebates.length === 0}
+          />
         </div>
       </div>
     </>
