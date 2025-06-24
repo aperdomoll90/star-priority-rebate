@@ -98,7 +98,7 @@ export default function AdminPortalClient() {
             iconPrev={<DownloadSVG color={rebates.length === 0 ? '#3498db' : '#fff'} />}
             label='Download'
             onClick={handleDownload}
-            className={styles['c-admin-portal__content--download']}
+            className={styles['c-admin-portal__banner--download']}
             ariaLabel='Download rebates'
             disabled={rebates.length === 0}
           />
