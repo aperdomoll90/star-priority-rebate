@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Constellations } from '../../../public/Constellations'
 import { DownloadSVG } from '../../../public/DownloadSVG'
 import { UserIcon } from '../../../public/userIcon'
+import { SubmissionCard } from '@/components/common/submitionCard/SubmissionCardProps'
 
 export default function AdminPortalClient() {
   const [rebates, setRebates] = useState<IUserRebateInfoProps[]>([])
@@ -18,10 +19,6 @@ export default function AdminPortalClient() {
   useEffect(() => {
     fetchRebates()
   }, [seeAll])
-
-  useEffect(() => {
-    console.log('Rebates updated:', rebates)
-  }, [rebates])
 
   const fetchRebates = async () => {
     try {
@@ -79,15 +76,16 @@ export default function AdminPortalClient() {
   return (
     <>
       {isLoading && <Loader />}
-      <div className={styles['c-admin-portal']}>
+      <div className={styles['c-admin-portal']} data-new-rebates={!seeAll}>
+        <div className={styles['c-admin-portal__toggle']}>
+          <input type='checkbox' id='c-admin-portal__toggle' checked={seeAll} onChange={() => setSeeAll(prev => !prev)} hidden />
+          <label htmlFor='c-admin-portal__toggle'>
+            <span></span>
+          </label>
+        </div>
+
         <div className={styles['c-admin-portal__banner']}>
           <Constellations className={styles['c-admin-portal__banner--constellation']} />
-          <div className={styles['c-admin-portal__banner--toggle']}>
-            <input type='checkbox' id='c-admin-portal__toggle' checked={seeAll} onChange={() => setSeeAll(prev => !prev)} hidden />
-            <label htmlFor='c-admin-portal__toggle'>
-              <span></span>
-            </label>
-          </div>
 
           <div className={styles['c-admin-portal__banner--title']}>
             <h1>StarPriority</h1>
@@ -102,41 +100,17 @@ export default function AdminPortalClient() {
             ariaLabel='Download rebates'
             disabled={rebates.length === 0}
           />
+          <div className={styles['c-admin-portal__banner--background']} />
         </div>
 
         <div className={styles['c-admin-portal__content']}>
-          <div className={styles['c-admin-portal__content--list']} data-empty={rebates.length === 0}>
+          <ul className={styles['c-admin-portal__content--list']} data-empty={rebates.length === 0}>
             {rebates.length > 0 ? (
-              rebates.map(rebate => (
-                <div key={rebate.redeem_code} className={styles['c-admin-portal__content--list--item']}>
-                  <UserIcon className={styles['c-admin-portal__content--list--item-image']} />
-
-                  <div className={styles['c-admin-portal__content--list--item-content']}>
-                    <strong>
-                      {rebate.first_name} {rebate.last_name}
-                    </strong>
-                    <div>{rebate.email}</div>
-                    <div>
-                      {rebate.country}
-                      {rebate.state ? `, ${rebate.state}` : ''}
-                    </div>
-                    <div>
-                      ID: {rebate.redeem_code} Product: {rebate.product_code}
-                    </div>
-                  </div>
-                  {/* <Image
-                    src={rebate.receipt_image as string}
-                    alt='Receipt Image'
-                    width={200}
-                    height={200}
-                    className={styles['c-admin-portal__content--list--item-image']}
-                  /> */}
-                </div>
-              ))
+              rebates.map(rebate => <SubmissionCard key={rebate.redeem_code} rebate={rebate} />)
             ) : (
               <div className={styles['c-admin-portal__content--list--']}> No rebates to display</div>
             )}
-          </div>
+          </ul>
         </div>
       </div>
     </>

@@ -6,17 +6,91 @@
   display: flex;
   flex-direction: column;
 
+  &__toggle {
+    height: 1rem;
+    width: 1rem;
+    position: absolute;
+    z-index: 9999;
+    top: 14dvh;
+    right: 4rem;
+
+    input[type='checkbox'] {
+      display: none;
+    }
+
+    label {
+      width: 60px;
+      height: 34px;
+      background-color: var(--white100);
+      border: 2px solid var(--blue300);
+      border-radius: 32px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &::before {
+        content: 'New';
+        position: absolute;
+        left: -2.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: var(--white100);
+        text-transform: uppercase;
+        transition: color 0.5s ease;
+        transition-delay: 0.5s;
+      }
+
+      &::after {
+        content: 'All';
+        position: absolute;
+        right: -2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: var(--white100);
+        text-transform: uppercase;
+        transition: color 0.5s ease;
+        transition-delay: 0.5s;
+      }
+
+      span {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background-color: var(--blue300);
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+        margin: 1px 0px 1px 1px;
+      }
+    }
+    input[type='checkbox']:checked + label span {
+      transform: translateX(26px);
+    }
+  }
   &__banner {
     width: 100%;
     height: 20dvh;
     display: flex;
     position: relative;
+    z-index: 99;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 2rem 2rem;
-    background: var(--blue300);
-    border-radius: 0 0 25px 25px;
+
+    &--background {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: -1;
+      background: var(--blue300);
+      border-radius: 0 0 25px 25px;
+      transition: transform 1s ease-in-out;
+    }
 
     &--constellation {
       opacity: 0.5;
@@ -26,64 +100,6 @@
       top: 5%;
       left: 5%;
     }
-    &--toggle {
-      height: 1rem;
-      width: 8rem;
-      position: absolute;
-      bottom: 2.5rem;
-      right: 4rem;
-
-      input[type='checkbox'] {
-        display: none;
-      }
-
-      label {
-        width: 60px;
-        height: 32px;
-        background-color: var(--white100);
-        border-radius: 32px;
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        border: 2px solid var(--white100);
-        margin: 0 6rem;
-
-        &::before {
-          content: 'New';
-          position: absolute;
-          left: -2.5rem;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 0.8rem;
-          color: var(--white100);
-          text-transform: uppercase;
-        }
-
-        &::after {
-          content: 'All';
-          position: absolute;
-          right: -2rem;
-          top: 50%;
-          transform: translateY(-50%);
-          font-size: 0.8rem;
-          color: var(--white100);
-          text-transform: uppercase;
-        }
-
-        span {
-          position: absolute;
-          width: 28px;
-          height: 28px;
-          background-color: var(--blue300);
-          border-radius: 50%;
-          transition: transform 0.3s ease;
-        }
-      }
-      input[type='checkbox']:checked + label span {
-        transform: translateX(28px);
-      }
-    }
 
     &--title {
       > h1,
@@ -91,6 +107,7 @@
       > p {
         align-self: flex-start;
         color: var(--white100);
+        margin-left: 2rem;
       }
       > h1 {
         font-size: 2.6rem;
@@ -107,6 +124,7 @@
       padding: 0.5rem 1.9rem !important;
       background-color: transparent !important;
       outline: 2px solid var(--gray100) !important;
+      margin-left: 2rem;
 
       &:hover {
         outline: 2px solid var(--gray100) !important;
@@ -124,13 +142,14 @@
   }
 
   &__content {
-    height: 65dvh;
+    height: 80dvh;
     width: 100%;
     padding: 1rem;
     display: flex;
     position: relative;
     flex-direction: column;
     gap: 0.5rem;
+    transition: transform 1s ease-in-out;
 
     &--list {
       width: 100%;
@@ -138,32 +157,9 @@
       display: flex;
       position: relative;
       flex-direction: column;
+      align-items: center;
       overflow: scroll;
       gap: 0.5rem;
-
-      &--item {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        align-items: center;
-        padding: 1rem;
-        border-radius: 15px;
-        gap: 1.5rem;
-
-        &-content {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          width: 100%;
-          height: 100%;
-          justify-content: center;
-        }
-        &-image {
-          min-width: 5rem;
-          height: 5rem;
-        }
-      }
     }
   }
 }
@@ -172,23 +168,29 @@
   .c-admin-portal {
     flex-direction: row-reverse;
 
+    &__toggle {
+      top: auto;
+      bottom: 2rem;
+      right: 5rem;
+    }
+
     &__banner {
       height: 100%;
       width: 50%;
-      border-radius: 155px 0 0 155px;
+      transition: transform 0.5s ease;
+      transform-origin: left center;
+      animation-fill-mode: forwards;
+
+      &--background {
+        border-radius: 20px;
+      }
 
       &--title {
         padding: 2rem 4rem;
       }
 
-      &--toggle {
-        width: 10rem;
-        padding: 0;
-        top: 1.5rem;
-        right: 2.5rem;
-      }
       &--download {
-        margin: 0 4rem;
+        margin: 0 6rem;
       }
     }
 
@@ -199,6 +201,7 @@
 
       &--list {
         padding: 1rem 0 2rem 0;
+        gap: 0.9rem;
 
         &[data-empty='true'] {
           justify-content: center;
@@ -206,5 +209,67 @@
         }
       }
     }
+  }
+}
+@media (min-width: 700px) {
+  .c-admin-portal {
+    &[data-new-rebates='true'] {
+      .c-admin-portal__toggle {
+        label {
+          border: 2px solid var(--blue300);
+          &::before,
+          &::after {
+            color: var(--blue300);
+          }
+        }
+      }
+      .c-admin-portal__banner--background {
+        animation: rubber-open 0.9s ease-in-out forwards;
+        transform-origin: left center;
+      }
+      .c-admin-portal__banner {
+        transform: translateX(-100%);
+      }
+      .c-admin-portal__content {
+        transform: translateX(100%);
+      }
+    }
+    &[data-new-rebates='false'] {
+      .c-admin-portal__banner--background {
+        animation: rubber-close 0.9s ease-in-out forwards;
+        transform-origin: right center;
+      }
+    }
+  }
+}
+
+@keyframes rubber-open {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(5);
+  }
+  80% {
+    transform: scaleX(0.9);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* keyframes for closing (pulling right) */
+@keyframes rubber-close {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(5);
+  }
+  80% {
+    transform: scaleX(0.9);
+  }
+  100% {
+    transform: scaleX(1);
   }
 }
