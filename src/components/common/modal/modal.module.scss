@@ -1,5 +1,4 @@
-.overlay {
-  content: '';
+.c-overlay {
   height: 100dvh;
   width: 100dvw;
   position: fixed;
@@ -9,134 +8,112 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--blackTransparent800);
+  background: var(--gray800);
+}
 
-  .modal {
-    min-height: 30dvh;
-    width: 90dvw;
+.c-modal {
+  min-height: 30dvh;
+  width: 90dvw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--backgroundWhite);
+  border-radius: 20px;
+  padding: 2.5rem;
+
+  &__sign {
+    height: 5rem;
+    width: 5rem;
+    position: absolute;
+    top: -2.5rem;
+    border-radius: 50%;
+    background: var(--red700);
+
+    svg {
+      height: 40%;
+      width: auto;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__header {
+    color: var(--errorColor);
+    font-size: 2.5rem;
+    margin-top: 1rem;
+    text-align: left;
+    letter-spacing: 3px;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--backgroundWhite);
-    border-radius: 5px;
-    padding: 2rem;
-    overflow: hidden;
-
-    &__content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      flex-grow: 1;
-      position: relative;
-      z-index: 0;
-    }
-
-    &__close {
-      margin-top: 1rem;
-      position: relative;
-      z-index: 2;
-    }
+    z-index: 2;
   }
-  @media (min-width: 900px) {
-    .modal {
-      min-height: 35dvh;
-      width: 40dvw;
+
+  &__content {
+    position: relative;
+    color: var(--gray300);
+    z-index: 2;
+    font-size: 1rem !important;
+    line-height: 1.5rem;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  &__close {
+    position: relative;
+    z-index: 2;
+    padding: 0.8rem 3rem;
+    background: var(--red700);
+    font-size: 0.8rem;
+
+    &:hover {
+      background: var(--red600);
+    }
+    &:active {
+      background: var(--red900);
     }
   }
-}
 
-.error_header {
-  color: var(--errorColor);
-  font-size: 4rem;
-  margin-top: 0.5rem;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  position: relative;
-  z-index: 2;
+  &[data-model-type='success'] {
+    .c-modal {
+      &__sign {
+        background: var(--green600);
+      }
+      &__close {
+        background: var(--green600);
+        padding: 0.8rem 3rem;
+        font-size: 0.8rem;
 
-  &::after {
-    content: 'Sorry!!';
-    color: var(--red400);
-    position: absolute;
-    left: -5rem;
-    top: -3rem;
-    z-index: -1;
-    font-size: 7.5rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    opacity: 0.2;
+        &:hover {
+         background: var(--green200);
+        }
+        &:active {
+          background: var(--green500);
+        }
+      }
+    }
   }
 }
-.error_message {
-  position: relative;
-  z-index: 2;
-  font-size: 1rem !important;
-  margin-bottom: 2rem;
-
-  &::after {
-    content: 'Sorry!!';
-    color: var(--red700);
-    position: absolute;
-    left: -20rem;
-    top: -2rem;
-    z-index: -1;
-    font-size: 10rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    rotate: -15deg;
-    opacity: 0.4;
+@media (min-width: 900px) {
+  .c-modal {
+    min-height: 35dvh;
+    width: 20dvw;
   }
 }
 
-.success_header {
-  position: relative;
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  text-align: left;
-  align-items: flex-start;
-  letter-spacing: 1px;
-  color: var(--green900);
-  &::after {
-    content: 'Success!!';
-    color: var(--green300);
-    position: absolute;
-    left: -10rem;
-    top: -3rem;
-    z-index: -1;
-    font-size: 8rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    opacity: 0.2;
+.c-success {
+  &__rebate {
+    margin: 0.8rem;
+    color: var(--gray400);
+    span {
+      color: var(--gray800);
+    }
   }
-}
-
-.success_message {
-  font-size: 2rem !important;
-  letter-spacing: 3px;
-  margin: 1rem;
-  text-align: center;
-  position: relative;
-  &::after {
-    content: 'Success!!';
-    color: var(--successColor);
-    position: absolute;
-    left: -20rem;
-    top: -2rem;
-    z-index: -1;
-    font-size: 12rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    rotate: -15deg;
-    opacity: 0.4;
+  &__disclaimer {
+    font-size: 0.8rem !important;
+    color: var(--gray300);
+    text-align: center;
   }
-}
-
-.success_disclaimer {
-  font-size: 0.8rem !important;
-  color: var(--gray400);
-  text-align: center;
 }

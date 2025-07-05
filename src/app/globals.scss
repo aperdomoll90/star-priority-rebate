@@ -38,6 +38,7 @@
   --green200: #2ecc71; /* Base success color */
   --green300: #96b996; /* Pale Light Green */
   --green500: #27ae60; /* Darker success color */
+  --green600: #7fcd01;
   --green900: #0b361c; /* Darkest success color */
 
   /* containers */
@@ -84,8 +85,6 @@
   --warningColor: var(--blue300); /* Blue */
 
   --sky-gradient: linear-gradient(to bottom, #ffa500 5%, #ffd700 15%, #87ceeb 40%, #4682b4 70%, #000033 100%);
-
-
 }
 
 * {
@@ -106,7 +105,7 @@ body {
   background: var(--gray200);
 }
 
-#page  {
+#page {
   position: relative;
   height: calc(100dvh - 0rem);
   width: calc(100dvw - 0.2rem);
@@ -131,11 +130,10 @@ body {
   }
 }
 
-
 @media (min-width: 1500px) {
   #page {
     height: clamp(65dvh, 70dvh, 75dvh);
-    width: clamp(50dvw, 55dvw,60dvw);
+    width: clamp(50dvw, 55dvw, 60dvw);
   }
 }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation' 
+import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -46,10 +46,10 @@ export default function AdminPage() {
       username: data.username,
       password: data.password,
     })
-  
+
     if (res?.ok) {
-      setIsCaptchaVisible(true) 
-      setIsLoading(false) 
+      setIsCaptchaVisible(true)
+      setIsLoading(false)
     } else {
       setModalMessage('Invalid credentials, please try again.')
       setIsModalOpen(true)
@@ -87,13 +87,17 @@ export default function AdminPage() {
           </form>
         )}
 
-        {isCaptchaVisible && <ReCaptchaVerifier onSuccess={handleCaptchaSuccess} onFailure={handleCaptchaFailure} isVerifying={isVerifyingCaptcha} setIsVerifying={setIsVerifyingCaptcha} />}
+        {isCaptchaVisible && (
+          <ReCaptchaVerifier
+            onSuccess={handleCaptchaSuccess}
+            onFailure={handleCaptchaFailure}
+            isVerifying={isVerifyingCaptcha}
+            setIsVerifying={setIsVerifyingCaptcha}
+          />
+        )}
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h3 className={modalStyles.error_header}>Oops!</h3>
-        <p className={modalStyles.error_message}>{modalMessage}</p>
-      </Modal>
+      <Modal header='Oops!' content={modalMessage} modelType='error' isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   )
 }

@@ -1,0 +1,44 @@
+.c-submission-card {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  align-items: center;
+  border-radius: 15px;
+  gap: 1.5rem;
+  padding: 1rem;
+
+  &__image {
+    flex-shrink: 0;
+    min-width: 5rem;
+    height: 5rem;
+  }
+
+  &__content {
+    min-width: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &--title,
+    &--email,
+    &--location,
+    &--codes {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &--codes {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .c-submission-card {
+    width: 27rem;
+  }
+}
