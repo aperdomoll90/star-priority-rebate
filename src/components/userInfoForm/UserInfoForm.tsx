@@ -177,20 +177,13 @@ const UserInfoForm: React.FC = () => {
           />
         </div>
       )}
-      <Modal isOpen={isModalOpen} onClose={handleSuccessModalClose}>
-        {error ? (
+      <Modal isOpen={isModalOpen} modelType={error ? 'error' : 'success'} header={error ? 'Sorry!' : 'Success!'} onClose={handleSuccessModalClose}>
+        {confirmationNumber ? (
           <>
-            <h3 className={modalStyles.error_header}>Sorry!!</h3>
-            <p className={modalStyles.error_message}>{error}</p>
-          </>
-        ) : confirmationNumber ? (
-          <>
-            <h3 className={modalStyles.success_header}>Thank you</h3>
-            <p className={modalStyles.success_subheader}>
-              Your <span>Starbrite</span> Priority Rebate ID is:
+            <p className={modalStyles['c-success__rebate']}>
+              Your rebate ID is: <span>{confirmationNumber}</span>
             </p>
-            <p className={modalStyles.success_message}>{confirmationNumber}</p>
-            <p className={modalStyles.success_disclaimer}>This info was sent to your email, please check your spam folder</p>
+            <p className={modalStyles['c-success__disclaimer']}>This info was sent to your email, please check your spam folder</p>
           </>
         ) : null}
       </Modal>

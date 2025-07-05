@@ -2,14 +2,18 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import styles from './modal.module.scss'
 import Button from '../button/button'
+import { CheckmarkIcon, CloseIcon } from '../../../../public/iconCollection'
 
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  children: React.ReactNode
+  header: string
+  content?: string
+  children?: React.ReactNode
+  modelType: 'error' | 'success'
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, header, content, modelType }) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const lastFocusedElementRef = useRef<HTMLElement | null>(null)
 
@@ -47,7 +51,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       window.addEventListener('keydown', closeModal)
       window.addEventListener('keydown', trapFocus)
 
-      const focusableElements = modalRef.current?.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') as NodeListOf<HTMLElement>
+      const focusableElements = modalRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      ) as NodeListOf<HTMLElement>
       const firstFocusableElement = focusableElements.length > 0 ? focusableElements[0] : null
       ;(firstFocusableElement as HTMLElement)?.focus()
 
@@ -69,10 +75,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null
 
   return (
-    <div className={styles.overlay} role='dialog' aria-modal='true'>
-      <div className={styles.modal} ref={modalRef}>
-        <div className={styles.modal__content}>{children}</div>
-        <Button type='button' className={styles.modal__close} label='Close' onClick={onClose} ariaLabel='Submit rebate form' />
+    <div className={styles['c-overlay']} role='dialog' aria-modal='true'>
+      <div className={styles['c-modal']} ref={modalRef} data-model-type={modelType}>
+        <div className={styles['c-modal__sign']}>{modelType === 'error' ? <CloseIcon color='#fff' /> : <CheckmarkIcon color='#fff' />}</div>
+        <h3 className={styles['c-modal__header']}>{header}</h3>
+        <p className={styles['c-modal__content']}>{content ? content : children}</p>
+        <Button type='button' className={styles['c-modal__close']} label={modelType === 'error' ? 'Try Again' : 'Continue'} onClick={onClose} ariaLabel='Submit rebate form' />
       </div>
     </div>
   )

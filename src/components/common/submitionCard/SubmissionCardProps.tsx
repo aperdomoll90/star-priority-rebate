@@ -1,7 +1,7 @@
 'use client'
 import React, { useCallback, useEffect, useRef } from 'react'
 import styles from './SubmissionCard.module.scss'
-import { UserIcon } from '../../../../public/userIcon'
+import { UserIcon } from '../../../../public/iconCollection'
 import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 
 interface SubmissionCardProps {

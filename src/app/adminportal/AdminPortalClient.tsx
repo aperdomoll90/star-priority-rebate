@@ -5,10 +5,8 @@ import Button from '../../components/common/button/button'
 import { IUserRebateInfoProps } from '@/utils/userRebateInfoTypes'
 import { generateCSV, downloadCSV } from '@/utils/csvHandler'
 import Loader from '../../components/common/loader/loader'
-import Image from 'next/image'
 import { Constellations } from '../../../public/Constellations'
-import { DownloadSVG } from '../../../public/DownloadSVG'
-import { UserIcon } from '../../../public/userIcon'
+import { DownloadIcon } from '../../../public/iconCollection'
 import { SubmissionCard } from '@/components/common/submitionCard/SubmissionCardProps'
 
 export default function AdminPortalClient() {
@@ -93,7 +91,7 @@ export default function AdminPortalClient() {
           </div>
 
           <Button
-            iconPrev={<DownloadSVG color={rebates.length === 0 ? '#3498db' : '#fff'} />}
+            iconPrev={<DownloadIcon color={rebates.length === 0 ? '#3498db' : '#fff'} />}
             label='Download'
             onClick={handleDownload}
             className={styles['c-admin-portal__banner--download']}
@@ -108,7 +106,7 @@ export default function AdminPortalClient() {
             {rebates.length > 0 ? (
               rebates.map(rebate => <SubmissionCard key={rebate.redeem_code} rebate={rebate} />)
             ) : (
-              <div className={styles['c-admin-portal__content--list--']}> No rebates to display</div>
+              <div className={styles['c-admin-portal__content--list']}> No rebates to display</div>
             )}
           </ul>
         </div>
