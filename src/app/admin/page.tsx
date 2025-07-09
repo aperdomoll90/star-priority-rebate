@@ -84,14 +84,6 @@ export default function AdminPage() {
 
           {!isCaptchaVisible && (
             <form onSubmit={handleSubmit(onSubmit)} className={styles['c-admin-login__banner--form']}>
-              {/* <div>
-                <input type='text' {...register('username')} placeholder='Username' />
-                {errors.username && <span className={styles.error}>{errors.username.message}</span>}
-              </div>
-              <div>
-                <input type='password' {...register('password')} placeholder='Password' />
-                {errors.password && <span className={styles.error}>{errors.password.message}</span>}
-              </div> */}
               <Input
                 className={`${styles['c-admin-login__banner--form--input']}`}
                 control={control}
@@ -114,27 +106,19 @@ export default function AdminPage() {
               <Button type='submit' label='Next' className={styles['c-admin-login__banner--form--button']} ariaLabel='Verify Login' />
             </form>
           )}
-
-          {/* <Button
-            iconPrev={<DownloadIcon color={rebates.length === 0 ? '#3498db' : '#fff'} />}
-            label='Download'
-            onClick={handleDownload}
-            className={styles['c-admin-portal__banner--download']}
-            ariaLabel='Download rebates'
-            disabled={rebates.length === 0}
-          /> */}
-          {/* <div className={styles['c-admin-portal__banner--background']} /> */}
         </div>
+      </div>
 
-        {isCaptchaVisible && (
+      {isCaptchaVisible && (
+        <div className={styles['c-recaptcha-wrapper']}>
           <ReCaptchaVerifier
             onSuccess={handleCaptchaSuccess}
             onFailure={handleCaptchaFailure}
             isVerifying={isVerifyingCaptcha}
             setIsVerifying={setIsVerifyingCaptcha}
           />
-        )}
-      </div>
+        </div>
+      )}
 
       <Modal header='Oops!' content={modalMessage} modelType='error' isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
