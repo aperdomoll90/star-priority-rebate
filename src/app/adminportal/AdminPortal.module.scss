@@ -127,7 +127,11 @@
       margin-left: 2rem;
 
       &:hover {
-        outline: 2px solid var(--gray100) !important;
+        background-color: var(--blue400) !important;
+      }
+
+      &:active {
+        background-color: var(--blue200) !important;
       }
 
       &:disabled {
@@ -142,7 +146,7 @@
   }
 
   &__content {
-    height: 80dvh;
+    height: 63dvh;
     width: 100%;
     padding: 1rem;
     display: flex;
