@@ -12,6 +12,9 @@ import Button from '@/components/common/button/button'
 import Modal from '@/components/common/modal/modal'
 import Loader from '@/components/common/loader/loader'
 import ReCaptchaVerifier from '@/utils/ReCaptchaVerifier'
+import { Constellations } from '../../../public/Constellations'
+import { Input } from '@/components/common/formElements/FormElements'
+import { TriangularMesh } from '../../../public/TriangularMesh'
 
 // Define the schema for form validation
 const loginSchema = z.object({
@@ -33,6 +36,7 @@ export default function AdminPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -70,22 +74,57 @@ export default function AdminPage() {
   return (
     <>
       {(isLoading || isVerifyingCaptcha) && <Loader />}
-      <div className={styles.loginContainer}>
-        <h1 className={styles.loginHeader}>Admin Login</h1>
+      <div className={styles['c-admin-login']}>
+        <TriangularMesh className={styles['c-admin-login__mesh']} />
 
-        {!isCaptchaVisible && (
-          <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
-            <div>
-              <input type='text' {...register('username')} placeholder='Username' />
-              {errors.username && <span className={styles.error}>{errors.username.message}</span>}
-            </div>
-            <div>
-              <input type='password' {...register('password')} placeholder='Password' />
-              {errors.password && <span className={styles.error}>{errors.password.message}</span>}
-            </div>
-            <Button type='submit' label='Next' className={styles.loginButton} ariaLabel='Verify Login' />
-          </form>
-        )}
+        <div className={styles['c-admin-login__banner']}>
+          <Constellations className={styles['c-admin-login__banner--constellation']} />
+
+          <h1 className={styles['c-admin-login__banner--title']}>Admin Login</h1>
+
+          {!isCaptchaVisible && (
+            <form onSubmit={handleSubmit(onSubmit)} className={styles['c-admin-login__banner--form']}>
+              {/* <div>
+                <input type='text' {...register('username')} placeholder='Username' />
+                {errors.username && <span className={styles.error}>{errors.username.message}</span>}
+              </div>
+              <div>
+                <input type='password' {...register('password')} placeholder='Password' />
+                {errors.password && <span className={styles.error}>{errors.password.message}</span>}
+              </div> */}
+              <Input
+                className={`${styles['c-admin-login__banner--form--input']}`}
+                control={control}
+                name='username'
+                type='text'
+                label='Username'
+                error={errors.username}
+                required
+              />
+
+              <Input
+                className={`${styles['c-admin-login__banner--form--input']}`}
+                control={control}
+                name='password'
+                type='password'
+                label='Password'
+                error={errors.password}
+                required
+              />
+              <Button type='submit' label='Next' className={styles['c-admin-login__banner--form--button']} ariaLabel='Verify Login' />
+            </form>
+          )}
+
+          {/* <Button
+            iconPrev={<DownloadIcon color={rebates.length === 0 ? '#3498db' : '#fff'} />}
+            label='Download'
+            onClick={handleDownload}
+            className={styles['c-admin-portal__banner--download']}
+            ariaLabel='Download rebates'
+            disabled={rebates.length === 0}
+          /> */}
+          {/* <div className={styles['c-admin-portal__banner--background']} /> */}
+        </div>
 
         {isCaptchaVisible && (
           <ReCaptchaVerifier

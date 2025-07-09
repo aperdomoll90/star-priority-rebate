@@ -1,56 +1,129 @@
-.loginContainer {
+.c-admin-login {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  width: 90dvw;
-  min-height: 40dvh;
+  width: 100%;
+  height: 100%;
   background-color: var(--gray100);
   border-radius: 5px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: width 0.5s, height 0.5s;
 
-  .loginHeader {
-    font-size: 2rem;
-    letter-spacing: 2px;
-    margin-top: 2rem;
+  &__mesh {
+    position: absolute;
+    left: -10%;
+    height: auto;
+    width: 100%;
+    path {
+      stroke: var(--gray200);
+    }
   }
 
-  .loginForm {
+  &__banner {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    width: 90%;
-    min-height: 60%;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    background: var(--blue300);
+    overflow: hidden;
+    position: relative;
+    gap: 2rem;
 
-    input {
-      width: 100%;
-      height: 2rem;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 5px;
-      background-color: var(--gray200);
+    &--constellation {
+      opacity: 0.5;
+      width: 92%;
+      position: absolute;
+      z-index: 0;
+      top: 5%;
+      left: 5%;
+    }
+    &--title {
+      align-self: flex-start;
+      color: var(--white100);
+      font-size: 2.6rem;
+      letter-spacing: 0.8px;
+      font-weight: 900;
+      margin-left: 20%;
     }
 
-    .loginButton {
-      width: 100%;
-      margin: 2rem 0;
-    }
+    &--form {
+      display: flex;
+      flex-direction: column;
+      width: 65%;
+      gap: 1rem;
 
-  
+      &--input {
+        width: 100%;
+        height: 2.9rem;
+        margin: 1.4rem 0;
+
+        input {
+          height: 2.9rem;
+          line-height: 2.9rem;
+          border: none !important;
+          background: var(--backgroundWhite) !important;
+
+          &:focus + label,
+          &:not(:placeholder-shown) + label {
+            background: transparent !important;
+            transform: translate(-10%, -140%) scale(0.78) !important;
+          }
+        }
+
+        label {
+          color: var(--gray400) !important;
+          line-height: 2.9rem;
+          font-size: 1rem !important;
+          letter-spacing: 2px;
+        }
+
+        span {
+          line-height: 2.9rem;
+          bottom: -3.2rem;
+          right: 0;
+          transform: translate(0) !important;
+        }
+      }
+
+      &--button {
+        width: 100%;
+        background-color: transparent !important;
+        outline: 2px solid var(--gray100) !important;
+        margin-top: 2rem;
+
+        &:hover {
+          background-color: var(--blue400) !important;
+        }
+
+        &:active {
+          background-color: var(--blue200) !important;
+        }
+
+        &:disabled {
+          background-color: var(--gray200) !important;
+          outline: none !important;
+          color: var(--blue300) !important;
+          &:hover {
+            background-color: var(--gray300) !important;
+          }
+        }
+      }
+    }
   }
 }
 
 @media (min-width: 700px) {
-  .loginContainer {
-    width: 70dvw;
-  }
-}
-
-@media (min-width: 700px) {
-  .loginContainer {
-    width: 30dvw;
+  .c-admin-login__banner {
+    width: 55%;
+    height: 100%;
+    border-radius: 155px 0 0 155px;
+    align-items: flex-start;
+    padding: 5% 0 0 15%;
+    &--title {
+      margin-left: 0%;
+    }
   }
 }
